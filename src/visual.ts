@@ -38,20 +38,22 @@ export interface OpcoesIA {
  *   evento "pbi-resize" na window                -> disparado quando o visual muda de tamanho
  */
 export class Visual implements IVisual {
-    private host: IVisualHost;
-    private events: IVisualEventService;
-    private target: HTMLElement;
-    private ultimoHtml: string = null;
+    private host!: IVisualHost;
+    private events!: IVisualEventService;
+    private target!: HTMLElement;
+    private ultimoHtml: string | null = null;
     private resizeCallback: (() => void) | null = null;
-    private formattingSettings: VisualFormattingSettingsModel;
+    private formattingSettings!: VisualFormattingSettingsModel;
     private formattingSettingsService: FormattingSettingsService;
 
-    constructor(options: VisualConstructorOptions) {
-        this.host = options.host;
-        this.events = options.host.eventService;
+    constructor(options?: VisualConstructorOptions) {
+        if (options) {
+            this.host = options.host;
+            this.events = options.host.eventService;
+            this.target = options.element;
+            this.target.classList.add("hjv-root");
+        }
         this.formattingSettingsService = new FormattingSettingsService();
-        this.target = options.element;
-        this.target.classList.add("hjv-root");
         this.exporApi();
     }
 
@@ -104,7 +106,7 @@ export class Visual implements IVisual {
 
         // Scripts inseridos via innerHTML não rodam: separa e executa depois que o HTML estiver na tela.
         const scripts = Array.from(container.querySelectorAll("script"));
-        scripts.forEach(s => s.parentNode.removeChild(s));
+        scripts.forEach(s => s.parentNode?.removeChild(s));
 
         // eslint-disable-next-line powerbi-visuals/no-inner-outer-html -- apenas limpa o conteúdo anterior
         this.target.innerHTML = "";
@@ -179,7 +181,7 @@ export class Visual implements IVisual {
         const c = coluna || (card ? card.coluna.value : "");
 
         if (!valores || valores.length === 0) {
-            this.host.applyJsonFilter(null, "general", "filter", FilterAction.remove);
+            this.host.applyJsonFilter(null as any, "general", "filter", FilterAction.remove);
             return;
         }
         if (!t || !c) {

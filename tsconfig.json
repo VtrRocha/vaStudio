@@ -9,6 +9,8 @@
         "moduleResolution": "node",
         "declaration": true,
         "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
         "lib": [
             "es2022",
             "dom"
