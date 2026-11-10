@@ -14,5 +14,5 @@
 
 ## 📝 Changelog / Registro de Evoluções
 - **10/11/2026**: Inicialização do repositório `vaStudio`, compilação da versão 1.1.0 (`dist/vaStudio.pbiviz`), organização da biblioteca de exemplos DAX (`exemplos/01` a `04`) e documentação oficial (`README.md`).
-- **10/11/2026**: Adição da pasta de skill original (`claude-skill`) do visual, mantendo a estrutura original (`instalar.ps1` e `SKILL.md`).
+- **10/11/2026**: Adição da pasta de skill original (`skill`) do visual, mantendo a estrutura original (`instalar.ps1` e `SKILL.md`).
 
