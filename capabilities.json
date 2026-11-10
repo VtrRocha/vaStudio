@@ -1,0 +1,81 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "HTML",
+            "name": "html",
+            "kind": "Measure"
+        }
+    ],
+    "objects": {
+        "general": {
+            "properties": {
+                "filter": {
+                    "type": {
+                        "filter": true
+                    }
+                }
+            }
+        },
+        "filtro": {
+            "properties": {
+                "tabela": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "coluna": {
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        },
+        "ia": {
+            "properties": {
+                "apiKey": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "modelo": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "endpoint": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "instrucao": {
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        }
+    },
+    "dataViewMappings": [
+        {
+            "conditions": [
+                { "html": { "max": 1 } }
+            ],
+            "single": {
+                "role": "html"
+            }
+        }
+    ],
+    "privileges": [
+        {
+            "name": "ExportContent",
+            "essential": false
+        },
+        {
+            "name": "WebAccess",
+            "essential": false,
+            "parameters": [
+                "https://*"
+            ]
+        }
+    ]
+}

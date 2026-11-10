@@ -1,0 +1,26 @@
+{
+    "visual": {
+        "name": "vaStudio",
+        "displayName": "VA Studio",
+        "guid": "htmlJsStudioECDA55D8A9E74168A5FFE5D14050141E",
+        "visualClassName": "Visual",
+        "version": "1.1.0.0",
+        "description": "Renderiza o HTML de uma medida DAX e executa o CSS e o JavaScript dele. O JS pode filtrar os outros visuais com pbi.filtrar(valores), baixar arquivos com pbi.baixar() e consultar IA Gemini com pbi.perguntarIA().",
+        "supportUrl": "https://github.com/VtrRocha/vaStudio/issues",
+        "gitHubUrl": "https://github.com/VtrRocha/vaStudio"
+    },
+    "apiVersion": "5.11.1",
+    "author": {
+        "name": "Vitor Assunção Rocha",
+        "email": "vitorassuncao43@gmail.com"
+    },
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": null,
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": [],
+    "version": "1.1.0.0"
+}

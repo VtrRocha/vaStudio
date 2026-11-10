@@ -1,0 +1,160 @@
+// ==============================================================================
+// VA STUDIO - EXEMPLO 02: TABELA INTERATIVA COM BUSCA E FILTRO CRUZADO
+// Objetivo: Exibir Top Clientes/Produtos com campo de pesquisa em tempo real,
+//           ordenação e disparo de filtro na página com `pbi.filtrar()`.
+// ==============================================================================
+
+Tabela Interativa Clientes = 
+// 1. DADOS TOP N DO MODELO (Resumo seguro para não sobrecarregar o visual)
+VAR _TopItens =
+    TOPN(
+        50,
+        SUMMARIZE(
+            fVendas,
+            dCliente[NomeCliente],
+            dCliente[Regional]
+        ),
+        [Total Vendas],
+        DESC
+    )
+
+VAR _Linhas =
+    CONCATENATEX(
+        _TopItens,
+        VAR _Nome = SUBSTITUTE(SUBSTITUTE(COALESCE(dCliente[NomeCliente], "Sem Nome"), "|", "/"), "<", "")
+        VAR _Reg = SUBSTITUTE(SUBSTITUTE(COALESCE(dCliente[Regional], "N/A"), "|", "/"), "<", "")
+        VAR _Venda = FORMAT(ROUND(COALESCE([Total Vendas], 0), 0), "0")
+        VAR _Margem = FORMAT(COALESCE([% Margem], 0), "0.0%")
+        RETURN
+            _Nome & "|" & _Reg & "|" & _Venda & "|" & _Margem,
+        "&#10;"
+    )
+
+RETURN
+"<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+  body, html { height: 100%; overflow: hidden; background: #ffffff; color: #1e293b; }
+  .table-box { display: flex; flex-direction: column; height: 100vh; padding: 12px; gap: 8px; }
+  .table-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .table-title { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .input-busca {
+    padding: 6px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 12px;
+    outline: none;
+    width: 180px;
+  }
+  .input-busca:focus { border-color: #2563eb; }
+  .btn-limpar {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-limpar:hover { background: #e2e8f0; }
+  .table-wrap { flex: 1; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  th { position: sticky; top: 0; background: #f8fafc; color: #64748b; font-weight: 600; text-align: left; padding: 8px 10px; border-bottom: 1px solid #e2e8f0; }
+  td { padding: 8px 10px; border-bottom: 1px solid #f1f5f9; }
+  tr { cursor: pointer; transition: background 0.15s; }
+  tr:hover { background: #f8fafc; }
+  tr.selecionada { background: #eff6ff; font-weight: 600; color: #1d4ed8; }
+</style>
+
+<textarea id='rawDados' style='display:none;'>" & _Linhas & "</textarea>
+
+<div class='table-box'>
+  <div class='table-header'>
+    <span class='table-title'>Ranking de Clientes (Clique para Filtrar)</span>
+    <div style='display:flex;gap:6px;'>
+      <input type='text' id='inpBusca' class='input-busca' placeholder='Buscar cliente...' />
+      <button id='btnLimpar' class='btn-limpar'>Limpar Filtro</button>
+    </div>
+  </div>
+  
+  <div class='table-wrap'>
+    <table>
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Regional</th>
+          <th style='text-align:right;'>Venda</th>
+          <th style='text-align:right;'>Margem</th>
+        </tr>
+      </thead>
+      <tbody id='tbCorpo'></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(function() {
+  var raw = (document.getElementById('rawDados').value || '').split('\n').filter(Boolean);
+  var dados = raw.map(function(l) {
+    var p = l.split('|');
+    return { nome: p[0] || '', reg: p[1] || '', venda: Number(p[2] || 0), margem: p[3] || '0%' };
+  });
+
+  var tbCorpo = document.getElementById('tbCorpo');
+  var inpBusca = document.getElementById('inpBusca');
+  var btnLimpar = document.getElementById('btnLimpar');
+  var itemSelecionado = pbi.estado && pbi.estado.cliente ? pbi.estado.cliente : null;
+
+  function renderizar(itens) {
+    tbCorpo.innerHTML = '';
+    itens.forEach(function(d) {
+      var tr = document.createElement('tr');
+      if (itemSelecionado === d.nome) tr.className = 'selecionada';
+      var vFmt = d.venda.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+      
+      tr.innerHTML = 
+        '<td>' + d.nome + '</td>' +
+        '<td>' + d.reg + '</td>' +
+        '<td style=""text-align:right;font-weight:600;"">' + vFmt + '</td>' +
+        '<td style=""text-align:right;"">' + d.margem + '</td>';
+      
+      tr.addEventListener('click', function() {
+        if (itemSelecionado === d.nome) {
+          itemSelecionado = null;
+          pbi.estado = {};
+          pbi.limpar();
+        } else {
+          itemSelecionado = d.nome;
+          pbi.estado = { cliente: d.nome };
+          // ATENÇÃO: Informe a tabela e coluna exata da dimensão do seu modelo!
+          pbi.filtrar([d.nome], 'dCliente', 'NomeCliente');
+        }
+        renderizar(filtrarDados(inpBusca.value));
+      });
+      tbCorpo.appendChild(tr);
+    });
+  }
+
+  function filtrarDados(termo) {
+    var t = (termo || '').toLowerCase().trim();
+    if (!t) return dados;
+    return dados.filter(function(d) {
+      return d.nome.toLowerCase().indexOf(t) >= 0 || d.reg.toLowerCase().indexOf(t) >= 0;
+    });
+  }
+
+  inpBusca.addEventListener('input', function() {
+    renderizar(filtrarDados(this.value));
+  });
+
+  btnLimpar.addEventListener('click', function() {
+    itemSelecionado = null;
+    pbi.estado = {};
+    pbi.limpar();
+    inpBusca.value = '';
+    renderizar(dados);
+  });
+
+  renderizar(dados);
+})();
+</script>"
+

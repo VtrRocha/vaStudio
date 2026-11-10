@@ -1,0 +1,87 @@
+// ==============================================================================
+// VA STUDIO - EXEMPLO 04: PAINEL DE ANÁLISE EXECUTIVA COM IA (GEMINI)
+// Objetivo: Enviar o resumo filtrado da página para a IA Gemini com `pbi.perguntarIA()`
+//           e exibir um parecer executivo formatado com insights acionáveis.
+// ==============================================================================
+
+Painel Analise IA = 
+VAR _Faturamento = FORMAT([Total Vendas], "R$ #,##0")
+VAR _Meta = FORMAT([Meta Vendas], "R$ #,##0")
+VAR _Atingimento = FORMAT(DIVIDE([Total Vendas], [Meta Vendas], 0), "0.0%")
+VAR _Margem = FORMAT([% Margem], "0.0%")
+
+VAR _ResumoContexto = 
+    "Faturamento Atual: " & _Faturamento & 
+    " | Meta: " & _Meta & 
+    " | Atingimento: " & _Atingimento & 
+    " | Margem Média: " & _Margem
+
+RETURN
+"<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+  body, html { height: 100%; background: #0f172a; color: #f8fafc; overflow: hidden; }
+  .ai-box { display: flex; flex-direction: column; height: 100vh; padding: 14px; gap: 10px; }
+  .ai-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+  .ai-title { font-size: 13px; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 6px; }
+  .btn-analisar {
+    background: linear-gradient(135deg, #0284c7, #2563eb);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.2s;
+  }
+  .btn-analisar:hover { filter: brightness(1.15); }
+  .ai-content {
+    flex: 1;
+    overflow-y: auto;
+    background: rgba(30,41,59,0.7);
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #cbd5e1;
+  }
+  .loading { color: #38bdf8; font-style: italic; }
+</style>
+
+<div class='ai-box'>
+  <div class='ai-header'>
+    <div class='ai-title'>✨ Análise Executiva com IA</div>
+    <button class='btn-analisar' id='btnGerar'>Gerar Parecer</button>
+  </div>
+  <div class='ai-content' id='conteudoIA'>
+    Clique em <b>Gerar Parecer</b> para a IA analisar os indicadores do contexto filtrado.
+  </div>
+</div>
+
+<script>
+(function() {
+  var resumo = '" & _ResumoContexto & "';
+  var btn = document.getElementById('btnGerar');
+  var box = document.getElementById('conteudoIA');
+
+  btn.addEventListener('click', function() {
+    box.innerHTML = '<span class=""loading"">Consultando IA Gemini e analisando dados...</span>';
+    btn.disabled = true;
+
+    var prompt = 'Você é um consultor executivo sênior de negócios. Analise os seguintes indicadores e responda em 3 tópicos curtos (Status Geral, Alertas Críticos, Ação Recomendada): ' + resumo;
+
+    pbi.perguntarIA(prompt)
+      .then(function(resposta) {
+        btn.disabled = false;
+        // Substitui quebras de linha por parágrafos
+        box.innerHTML = resposta.replace(/\\n/g, '<br>');
+      })
+      .catch(function(err) {
+        btn.disabled = false;
+        box.innerHTML = '<span style=""color:#f87171;"">Erro ao consultar IA: ' + err.message + '<br><small>Configure a chave da API em Formatar > IA (Gemini).</small></span>';
+      });
+  });
+})();
+</script>"
+

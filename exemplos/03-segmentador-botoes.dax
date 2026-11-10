@@ -1,0 +1,99 @@
+// ==============================================================================
+// VA STUDIO - EXEMPLO 03: SEGMENTADOR DE BOTÕES MODERNOS (PILLS)
+// Objetivo: Substituir a segmentação nativa do Power BI por botões modernos em pílula
+//           com contadores e seleção única ou múltipla via `pbi.filtrar()`.
+// ==============================================================================
+
+Segmentador Botoes Status = 
+VAR _TabelaStatus = 
+    DATATABLE(
+        "Status", STRING,
+        "Ordem", INTEGER,
+        {
+            {"Todos", 0},
+            {"Faturado", 1},
+            {"Pendente", 2},
+            {"Cancelado", 3}
+        }
+    )
+
+VAR _ListaItens = 
+    CONCATENATEX(
+        _TabelaStatus,
+        [Status],
+        "|"
+    )
+
+RETURN
+"<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+  body, html { height: 100%; display: flex; align-items: center; background: transparent; overflow: hidden; }
+  .pills-container {
+    display: flex;
+    gap: 8px;
+    padding: 4px;
+    width: 100%;
+    overflow-x: auto;
+  }
+  .pill-btn {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .pill-btn:hover {
+    border-color: #94a3b8;
+    background: #f8fafc;
+  }
+  .pill-btn.ativo {
+    background: #0284c7;
+    border-color: #0284c7;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(2,132,199,0.3);
+  }
+</style>
+
+<div class='pills-container' id='pillsContainer'></div>
+
+<script>
+(function() {
+  var itens = '" & _ListaItens & "'.split('|');
+  var container = document.getElementById('pillsContainer');
+  var statusAtivo = pbi.estado && pbi.estado.status ? pbi.estado.status : 'Todos';
+
+  function renderizar() {
+    container.innerHTML = '';
+    itens.forEach(function(nome) {
+      var btn = document.createElement('button');
+      btn.className = 'pill-btn' + (statusAtivo === nome ? ' ativo' : '');
+      btn.textContent = nome;
+
+      btn.addEventListener('click', function() {
+        if (nome === 'Todos') {
+          statusAtivo = 'Todos';
+          pbi.estado = { status: 'Todos' };
+          pbi.limpar();
+        } else {
+          statusAtivo = nome;
+          pbi.estado = { status: nome };
+          // ATENÇÃO: Informe a tabela e a coluna exata do seu modelo!
+          pbi.filtrar([nome], 'fVendas', 'StatusPedido');
+        }
+        renderizar();
+      });
+
+      container.appendChild(btn);
+    });
+  }
+
+  renderizar();
+})();
+</script>"
+
