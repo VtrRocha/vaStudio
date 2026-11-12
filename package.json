@@ -1,7 +1,7 @@
 {
   "name": "va-studio",
   "description": "Visual personalizado do Power BI que renderiza HTML + CSS + JavaScript vindos de uma medida DAX, com filtro cruzado, download e integração com IA Gemini.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "author": "Vitor Assunção Rocha",
   "license": "MIT",

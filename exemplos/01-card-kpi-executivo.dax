@@ -1,7 +1,11 @@
 // ==============================================================================
 // VA STUDIO - EXEMPLO 01: CARD DE KPI EXECUTIVO MODERNO
-// Objetivo: Exibir um KPI com valor principal, variação vs Meta/Ano Anterior,
-//           barra de progresso e indicador visual de atingimento.
+// Objetivo: Exibir um KPI com valor principal, atingimento da meta,
+//           barra de progresso e indicador visual de status.
+// ==============================================================================
+// O QUE TROCAR PELOS NOMES DO SEU MODELO
+//   [Total Vendas]  -> sua medida de valor realizado
+//   [Meta Vendas]   -> sua medida de meta
 // ==============================================================================
 
 Card KPI Executivo = 

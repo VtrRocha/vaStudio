@@ -1,7 +1,13 @@
 // ==============================================================================
 // VA STUDIO - EXEMPLO 03: SEGMENTADOR DE BOTÕES MODERNOS (PILLS)
-// Objetivo: Substituir a segmentação nativa do Power BI por botões modernos em pílula
-//           com contadores e seleção única ou múltipla via `pbi.filtrar()`.
+// Objetivo: Substituir a segmentação nativa do Power BI por botões modernos em pílula,
+//           com seleção única que filtra a página via `pbi.filtrar()`.
+// ==============================================================================
+// O QUE TROCAR PELOS NOMES DO SEU MODELO
+//   "Faturado", "Pendente", "Cancelado"  -> os valores que existem na sua coluna
+//                                           (mantenha "Todos", que limpa o filtro)
+//   No JS, em pbi.filtrar([nome], 'fVendas', 'StatusPedido'), informe a tabela
+//   e a coluna que guardam esses valores no seu modelo.
 // ==============================================================================
 
 Segmentador Botoes Status = 
@@ -17,11 +23,14 @@ VAR _TabelaStatus =
         }
     )
 
-VAR _ListaItens = 
+// Texto que entra numa string JS precisa de escape: barra, aspa simples e "<".
+// Sem isso, um valor como O'Brien quebra o script (ou vira código).
+VAR _ListaItens =
     CONCATENATEX(
         _TabelaStatus,
-        [Status],
-        "|"
+        SUBSTITUTE(SUBSTITUTE(SUBSTITUTE([Status], "\", "\\"), "'", "\'"), "<", "\x3C"),
+        "|",
+        [Ordem], ASC
     )
 
 RETURN

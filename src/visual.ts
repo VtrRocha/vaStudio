@@ -28,7 +28,7 @@ export interface OpcoesIA {
  * O JS da medida recebe o objeto global `pbi` para conversar com o Power BI:
  *   pbi.filtrar(valores, tabela?, coluna?)       -> filtra os outros visuais (como uma segmentação)
  *   pbi.limpar()                                 -> remove o filtro aplicado por este visual
- *   pbi.baixar(conteudo, nome, tipo?)            -> salva um arquivo (csv/txt/json...) via serviço de download do Power BI
+ *   pbi.baixar(conteudo, nome, tipo?)            -> salva um arquivo via serviço de download do Power BI; tipo é "csv" (padrão), "txt", "json"... e não um MIME type
  *   pbi.perguntarIA(prompt, opcoesOuContexto?)   -> consulta a API do Gemini (com retry/fallback automático) e devolve Promise<string>
  *   pbi.iaConfigurada()                          -> true se houver chave/endpoint configurado em Formatar > IA (Gemini)
  *   pbi.usoIA                                    -> telemetria de consumo de tokens e requisições por modelo
@@ -101,7 +101,7 @@ export class Visual implements IVisual {
         this.resizeCallback = null;
         const container = document.createElement("div");
         container.className = "hjv-conteudo";
-        // eslint-disable-next-line powerbi-visuals/no-inner-outer-html -- injetar o HTML da medida é a função do visual (ver SECURITY.md)
+        // eslint-disable-next-line powerbi-visuals/no-inner-outer-html -- injetar o HTML da medida é a função do visual
         container.innerHTML = html;
 
         // Scripts inseridos via innerHTML não rodam: separa e executa depois que o HTML estiver na tela.
@@ -143,7 +143,7 @@ export class Visual implements IVisual {
             alertaMensagem: ""
         };
         (window as any).pbi = {
-            versao: "1.1.0.0",
+            versao: "1.1.1.0",
             estado: anterior && anterior.estado ? anterior.estado : {},
             usoIA: usoInicial,
             largura: 0,

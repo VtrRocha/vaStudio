@@ -1,89 +1,118 @@
 ---
-name: powerbi-html-js-visual
-description: Cria dashboards e visuais em HTML + CSS + JavaScript dentro do Power BI — medida DAX que devolve a página inteira (dados embutidos, estilos e script) renderizada pelo visual personalizado "HTML JS Studio" (.pbiviz), com interação de filtros (pbi.filtrar filtra os outros visuais da página), hover, clique, busca, ordenação e exportação. Inclui compilar o visual com pbiviz e validar a medida fora do Power BI (node --check + print no Edge). Use SEMPRE que o usuário pedir visual/dashboard/painel "com JS", "HTML, CSS e JS", "medida que gera HTML", "visual interativo em HTML", "clicar e filtrar a página", "tooltip/hover em visual HTML", "mapa de positivação", reclamar que o HTML Content não roda script, ou quiser adaptar o dashboard de campanhas para outro painel — mesmo sem citar o nome do visual.
+name: va-studio
+description: Cria dashboards e visuais modernos em HTML5 + CSS3 + JavaScript dentro do Power BI — medida DAX que devolve a interface completa renderizada pelo visual personalizado "VA Studio" (.pbiviz), com suporte a filtro cruzado bidirecional com a página (pbi.filtrar), persistência de seleção (pbi.estado), download de relatórios/arquivos (pbi.baixar) e análise executiva em tempo real com IA Gemini (pbi.perguntarIA). Use SEMPRE que o usuário pedir visuais/dashboards interativos em HTML/JS, filtros por clique, tabelas interativas com busca/ordenação, segmentadores em botões, cartões KPI modernos ou inteligência artificial embutida no visual.
 ---
 
-# Visuais HTML + CSS + JS no Power BI
+# 🚀 VA Studio — Visuais HTML5 + CSS3 + JS no Power BI
 
-O Power BI não tem visual nativo que execute JavaScript. O **HTML Content** da AppSource mostra HTML e CSS, mas **ignora `<script>`**. O **HTML JS Studio** recebe uma medida de texto, injeta o HTML e executa os scripts. Toda a regra de negócio fica no DAX; o JS só desenha e cuida da interação.
+O Power BI não tem visual nativo que execute JavaScript. O *HTML Content* (visual de terceiros, da AppSource) mostra HTML e CSS, mas não executa `<script>`. O **VA Studio** recebe uma medida DAX de texto, injeta o HTML/CSS e executa o JavaScript com acesso à API global `pbi`. Toda a regra de negócio e agregação de dados fica no DAX; o JS cuida da renderização, animações e interações.
 
-Arquivos desta skill (leia conforme a necessidade):
+Arquivos desta skill:
 
-| Arquivo | Quando ler |
+| Arquivo | Finalidade |
 |---|---|
-| `references/visual.md` | Sempre que precisar da API `pbi` exposta ao JS. Também quando for compilar, alterar ou importar o visual, ou se o `.pbiviz` não existir na máquina. |
-| `references/medida-html-js.md` | **Sempre**, antes de escrever a medida: padrões do bloco de dados, CSS, JS, regras de escape no DAX, performance e armadilhas. |
-| `references/mapa.md` | Quando pedirem mapa, região, cidade, estado ou "positivação". Scripts em `scripts/mapa/` e modelo em `assets/dax/mapa-positivacao.dax`. |
-| `assets/visual/` | Código-fonte completo do visual. |
-| `assets/dax/ola-mundo.dax` | Menor exemplo funcional (KPI + botões que filtram). |
-| `assets/dax/dashboard-campanhas.dax` | Dashboard testado: KPIs, calendário mensal, dias da semana, tabela com busca/ordenação/exportação e seleção que filtra a página. **Parta dele.** |
-| `assets/dax/dashboard-campanhas-completo.dax` | Variante com barra superior, alternância Venda/Pedidos e comparativo semanal. |
-| `scripts/preview.ps1` | Exporta a medida do Desktop aberto, checa a sintaxe do JS e tira print no Edge headless. |
+| `assets/dist/vaStudio.pbiviz` | Visual compilado, pronto para importar no Power BI. |
+| `assets/visual/` | Código-fonte do visual (TypeScript), para recompilar ou alterar. |
+| `assets/exemplos/01-card-kpi-executivo.dax` | Cartão executivo moderno com valor, meta, % atingimento e barra de progresso responsiva. |
+| `assets/exemplos/02-tabela-com-busca-e-filtro.dax` | Tabela interativa com busca em tempo real e clique para filtro cruzado na página. |
+| `assets/exemplos/03-segmentador-botoes.dax` | Segmentador em estilo pílula/botões para substituir segmentações padrão do Power BI. |
+| `assets/exemplos/04-painel-analise-ia.dax` | Painel executivo integrado ao Gemini para gerar pareceres automatizados em tempo real. |
 
-## Fluxo
+Os exemplos usam nomes de um modelo fictício. O bloco **O QUE TROCAR** no topo de cada um lista o que substituir pelos nomes do modelo do usuário.
 
-### 1. Conectar e ler o modelo
-Use o MCP `powerbi-modeling-mcp`: `ListLocalInstances` → `Connect` → listar tabelas, colunas e medidas. **Nunca assuma nomes.** Verifique:
-- **As colunas de data têm hora?** Teste com `COUNTROWS(FILTER(VALUES(col), col <> INT(col)))`. Se tiverem, crie uma coluna só com a data para agrupar por dia.
-- **Volume:** linhas totais e itens distintos da dimensão principal. Com milhares de itens, a medida manda **resumos** (top N, últimos N dias), nunca linhas brutas.
+Arquivos opcionais, que **não fazem parte do repositório público** e só existem em instalações com o pacote completo. Confira se a pasta existe antes de citar ou usar; se não existir, siga só com este arquivo e os exemplos:
 
-Mudanças no modelo (uma coluna nova, por exemplo) não podem alterar números existentes. Compare um total antes e depois e diga ao usuário o que foi criado.
+| Arquivo | Finalidade |
+|---|---|
+| `references/visual.md` | API global `pbi` em detalhe, arquitetura do visual, empacotamento com `pbiviz` e configuração de cards. |
+| `references/medida-html-js.md` | Padrões do bloco de dados DAX, CSS, regras de escape (sem aspas duplas no JS), performance e boas práticas. |
+| `references/ia-gemini.md` | Guia de integração do visual com a API do Google Gemini (`pbi.perguntarIA`). |
+| `references/mapa.md` | Guia para mapas de positivação (SVG do Brasil/estados, cidades e coordenadas). |
+| `scripts/preview.ps1` | Valida a sintaxe do JS com `node --check` e gera print no Edge headless direto da porta do Power BI Desktop. |
 
-### 2. Garantir o visual
-Procure um `**/dist/htmlJsStudio*.pbiviz`. Se não houver, compile a partir de `assets/visual/` com `npm ci` e `npm run package` (detalhes em `references/visual.md`). Mantenha o **mesmo GUID** para o Power BI tratar o pacote como o mesmo visual.
+---
 
-### 3. Planejar o painel com o usuário
-Liste as perguntas de negócio que o painel responde e o que cada bloco mostra (KPIs, calendário, barras por dia da semana, tabela…). Defina:
-- que coluna o clique vai filtrar: `pbi.filtrar([valor])`, com o padrão configurado em Formatar → Filtro, ou `pbi.filtrar([v],'tabela','coluna')`;
-- o que é calculado no DAX (toda regra e agregação) e o que o JS faz (desenhar, alternar métrica, buscar, ordenar, destacar).
+## 🛠️ Fluxo de Trabalho Recomendado
 
-### 4. Escrever a medida
-Copie a estrutura de `assets/dax/dashboard-campanhas.dax` e adapte (detalhes em `references/medida-html-js.md`):
-1. **Dados:** `VAR _dados = "var D={...};"` montado com `CONCATENATEX`. Números com `FORMAT(COALESCE(x,0),"0")`, datas como `"yyyy-MM-dd"` e textos escapados (`\` e `'`).
-2. **CSS:** `<style>` com variáveis em `:root`, grid de 12 colunas e `@media` para telas estreitas.
-3. **HTML:** esqueleto com ids que o JS preenche.
-4. **JS:** dentro de `(function(){ ... })();`, só com `var`/`function`. Strings com aspas simples e trechos HTML em template literals (crase). **Nenhuma aspa dupla.**
-5. **Retorno:** `RETURN IF(ISBLANK(...), "<div>Sem dados...</div>", _css & _html & "<script>(function(){" & _dados & _js & "})();</script>")`.
+### 1. Conectar e Inspecionar o Modelo de Dados
+- Use o MCP `powerbi-modeling-mcp` (`ListLocalInstances` → `Connect`) ou ferramentas locais (DAX Studio / ADOMD) para inspecionar tabelas, colunas e medidas. **Nunca assuma nomes.**
+- **Datas:** Verifique se as colunas de data contêm hora (`COUNTROWS(FILTER(VALUES(col), col <> INT(col)))`). Se sim, use uma coluna de data pura para agrupamentos.
+- **Volume:** Em bases com milhares de registros, nunca envie linhas brutas no DAX. Envie **resumos** (Top N, agregações por período, totais).
 
-Antes de criar, teste a parte de dados com `DEFINE MEASURE ... EVALUATE { [medida] }`, medindo o tamanho em caracteres e o tempo. Crie a medida com `description` e `displayFolder: "Visuais HTML"`.
+### 2. Garantir o Visual no Relatório
+- O visual compilado está em `assets/dist/vaStudio.pbiviz`.
+- Caso precise recompilar: em `assets/visual/`, execute `npm ci` e depois `npm run package`. Mantenha o mesmo GUID no `pbiviz.json` para o Power BI tratar o pacote como o mesmo visual.
 
-### 5. Validar fora do Power BI
+### 3. Planejar a Medida DAX
+Defina com clareza:
+- Quais indicadores e tabelas serão agregados no DAX.
+- Qual coluna será filtrada no clique: `pbi.filtrar([valor], 'tabela', 'coluna')`.
+- O que o JS executará: renderizar cards, filtrar localmente via busca, ordenar, disparar download ou acionar IA.
+
+### 4. Escrever a Medida DAX
+Siga a estrutura padrão:
+1. **Cálculos/Agregações:** Variáveis com `SUM`, `CALCULATE`, `TOPN`, etc.
+2. **Dados (`VAR _dados`):** `"var D={k:{...},t:[...]};"` montado com `CONCATENATEX`. Números sempre com `FORMAT(COALESCE(x,0),"0")` ou `"0.00"`. Datas em formato ISO `"yyyy-MM-dd"`. Textos escapados com `SUBSTITUTE`.
+3. **Estilos (`VAR _css`):** `<style>` com variáveis CSS em `:root`, layout flex/grid responsivo.
+4. **Estrutura (`VAR _html`):** Tags HTML com IDs semânticos para o JS preencher.
+5. **Script (`VAR _js`):** Função autoexecutável `(function(){ ... })();`, **apenas com `var` e `function`**. Use aspas simples (`'`) e template literals (`` ` ``) para strings e HTML. **Nunca use aspas duplas no JS** para não conflitar com a string do DAX.
+6. **Retorno:**
+   ```dax
+   RETURN IF(
+       ISBLANK([TotalPrincipal]),
+       "<div class='vazio'>Sem dados para o filtro selecionado.</div>",
+       _css & _html & "<script>(function(){" & _dados & _js & "})();</script>"
+   )
+   ```
+
+**Escape os textos do modelo.** Texto de coluna dentro de uma string JS passa por `SUBSTITUTE(SUBSTITUTE(SUBSTITUTE([Texto], "\", "\\"), "'", "\'"), "<", "\x3C")`. Texto que vai para a tela usa `textContent`, ou uma função `escapar()` antes do `innerHTML` (veja os exemplos 02 e 04). Sem isso, um valor do banco quebra o script ou vira código dentro do visual.
+
+**Barra invertida no DAX não é escape.** O texto vai para o JS exatamente como foi escrito: uma quebra de linha em regex é `/\n/g`, e `/\\n/g` procura uma barra seguida de "n". O único escape do DAX é `""` para uma aspa dupla.
+
+### 5. Validar fora do Power BI (opcional)
+Só se `scripts/preview.ps1` existir nesta instalação:
 ```powershell
-& "<skill>\scripts\preview.ps1" -Porta <porta> -Medida "<nome>" -Pasta "<pasta com caminho longo>"
-& "<skill>\scripts\preview.ps1" ... -Estado "{sel:'<item>'}" -Nome selecionado
+& "<skill>\scripts\preview.ps1" -Porta <porta> -Medida "NomeDaMedida" -Pasta "C:\temp\preview"
 ```
-Abra os `.png` e confira:
-- a sintaxe está OK;
-- os números batem com uma consulta DAX;
-- o estado selecionado muda os KPIs e os destaques;
-- nada aparece cortado.
+Confira os logs de sintaxe e o arquivo `.png` gerado. Sem o script, extraia o conteúdo do `<script>` e valide com `node --check`.
 
-Diga ao usuário o que foi validado no Edge e o que só se confirma no Desktop: a execução dentro do sandbox do visual e o filtro cruzado.
+### 6. Como Adicionar ao Relatório
+1. No Power BI Desktop, vá no painel **Visualizações** → clique nos três pontinhos (**`...`**) → **Importar um visual de um arquivo**.
+2. Selecione o arquivo `vaStudio.pbiviz`.
+3. Adicione o visual **VA Studio** à página e arraste a medida criada para o campo **HTML**.
+4. Lembre o usuário de salvar o arquivo (Ctrl+S): medidas criadas via MCP só vão para o `.pbix` ao salvar.
 
-### 6. Entregar
-- O caminho do `.pbiviz` e os passos: Visualizações → **…** → **Importar um visual de um arquivo** → adicionar **HTML JS Studio** → arrastar a medida para **HTML**.
-- O que cada bloco mostra, como interagir e o que ficou pendente de regra de negócio.
-- Lembrar o usuário de salvar o arquivo (Ctrl+S): medidas criadas via MCP só vão para o `.tmdl`/`.pbix` ao salvar.
-- No Serviço, o administrador do tenant pode bloquear visuais que não são da AppSource.
+---
 
-## Problemas já vistos
-| Sintoma | Causa | Correção |
+## 📚 API Global `pbi` (Disponível no JavaScript)
+
+Dentro da tag `<script>` da medida, use o objeto `pbi` (ou fallback seguro `var api = window.pbi || { estado: {}, filtrar: function(){}, limpar: function(){} };`):
+
+- **`pbi.filtrar(valores, tabela?, coluna?)`**: Aplica filtro cruzado no relatório (ex: `pbi.filtrar(['Sudeste'], 'dRegiao', 'NomeRegiao')`). Sem `tabela` e `coluna`, usa o que estiver em **Formatar > Filtro**, que vem vazio: passe sempre os dois argumentos ou oriente o usuário a preencher os campos.
+- **`pbi.limpar()`**: Remove o filtro cruzado aplicado pelo visual.
+- **`pbi.estado`**: Objeto para persistir seleções, abas ou busca entre atualizações de filtro do relatório.
+- **`pbi.baixar(conteudo, nomeArquivo, tipo?)`**: Salva um arquivo pelo serviço de download do Power BI. `tipo` é o tipo de arquivo (`'csv'` é o padrão; também `'txt'`, `'json'`), **não** um MIME type. Devolve `Promise<boolean>`: `false` quando o download foi bloqueado ou cancelado, então ofereça sempre uma alternativa de copiar e colar.
+- **`pbi.perguntarIA(prompt, opcoes?)`**: Chama a IA Gemini com os dados resumidos do visual e devolve `Promise<string>`. Exige a chave da API em **Formatar > IA (Gemini)**; sem ela a Promise é rejeitada. A resposta é texto com markdown: escape o HTML antes de usar `innerHTML` (veja o exemplo 04).
+- **`pbi.iaConfigurada()`**: Retorna `true` se houver chave ou endpoint de IA configurado no painel Formatar.
+- **`pbi.versao`**: Versão do visual carregado no relatório.
+- **`pbi.largura` / `pbi.altura`**: Dimensões atuais do visual em pixels.
+- **`pbi.aoRedimensionar(callback)`**: Registra callback disparado ao redimensionar o visual.
+
+A chave do Gemini fica gravada no relatório e é enviada pelo navegador de quem o abre. Para relatórios compartilhados, recomende o campo **Endpoint Customizado** (um proxy do usuário que guarda a chave no servidor).
+
+---
+
+## ⚠️ Diagnóstico e Solução de Problemas
+
+| Sintoma | Causa Comum | Solução Recomendada |
 |---|---|---|
-| Hover/clique não funcionam | Visual HTML Content (não roda JS) | Usar o HTML JS Studio |
-| Usuário procura visual com nome sugerido e não acha | Nome de visual da loja chutado | Não sugerir nomes de AppSource sem pesquisar |
-| `SyntaxError` no 2º update | `let`/`const` no topo, script reexecutado | `var` + IIFE |
-| Medida quebra ao colar | Aspas duplas no JS/HTML | Aspas simples + template literals |
-| JS com `undefined`/vírgula sobrando | Valor em branco virou texto vazio | `FORMAT(COALESCE(x,0),"0")` |
-| Medida lenta / gigante | Linhas brutas ou datetime com hora | Top N, janela de dias, coluna de data sem hora |
-| Print do Edge não gerado | Caminho curto 8.3 | Passar caminho longo em `-Pasta` |
-| Visual de altura fixa corta embaixo ou fica "em branco" no Power BI, mas passa no Edge | `height:100%` sem referência dentro de `.hjv-conteudo` | `#app{height:100vh;overflow:hidden}`, grid com `minmax(0,1fr)`, cards `min-height:0` e só a lista rolando. Testar com `preview.ps1`, que já simula a caixa do visual |
-| MCP mostra modelo "antigo" depois que o usuário mexeu no Desktop | Cache de metadados da conexão MCP | Confirmar com ADOMD (`INFO.TABLES()`, `INFO.MEASURES()`) e procurar a medida em **todas** as tabelas |
-| Script TOM/ADOMD quebra com conversão de tipo estranha | PowerShell não diferencia maiúsculas (`$p` sobrescreve `$P`) | Nomes de variável realmente distintos |
-| Porta do Desktop "sumiu" | O arquivo foi fechado e reaberto, e a porta mudou | `ListLocalInstances` de novo |
-| Print do Edge trava o comando | `Start-Process -Wait` espera os processos filhos do Edge | `-PassThru` + `WaitForExit(40000)` (já no `preview.ps1`) |
-| Pedem filtro de data/região dentro do visual | O JS não recalcula top N/distintos para um intervalo livre | Preferir **segmentação nativa**. Botões pré-calculados no DAX só se pedirem explicitamente (ver `references/medida-html-js.md`) |
-| Seleção some após atualizar | Estado guardado em variável local | Guardar em `pbi.estado` |
-| Bloco mostra valor maior que o do item selecionado | O bloco continuava mostrando todos os itens | Série por item (`d:[[offset,v,p]]`) e `serie()` no JS |
-| Pedem "baixar para Excel" | — | Janela de copiar/colar (TSV), com `pbi.baixar(csv, nome)` dentro dela; CSV com `;` + BOM |
-| "Download indisponível — o administrador restringiu os downloads" | Opção do tenant "Permitir downloads de visuais personalizados" desligada | Pedir ao admin para ligar a opção (de preferência para um grupo). A janela de copiar continua como reserva |
-| "O botão de download não funcionou" | Relatório ainda com o visual antigo | Reimportar o `.pbiviz` **e salvar**. Conferir `pbi.versao` |
+| Clique/Hover não funcionam | Usuário está usando o visual *HTML Content*, que não roda JS | Substituir pelo **VA Studio** (`vaStudio.pbiviz`). |
+| Erro `SyntaxError` ao filtrar/atualizar | Uso de `let` ou `const` no topo do script | Usar sempre `var` encapsulado dentro de IIFE `(function(){ ... })();`. |
+| Medida quebra ao colar no Power BI | Uso de aspas duplas `"` dentro do JS/HTML | Substituir por aspas simples `'` ou crases de template literal `` ` ``. |
+| Números aparecem como `NaN` ou quebram o JS | Valor em branco do DAX virou string vazia | Sempre tratar números com `FORMAT(COALESCE(x,0),"0")`. |
+| Medida lenta ou excedendo tamanho | Envio de linhas detalhadas em vez de resumos | Utilizar `TOPN`, agregações por período e manter caracteres em dezenas de milhares. |
+| Layout de altura fixa corta ou fica em branco | Uso de `height: 100%` sem referência de pai | Usar `#app { height: 100vh; overflow: hidden; }` e containers com `min-height: 0;`. |
+| "Filtro não configurado" | `pbi.filtrar(valores)` sem tabela/coluna e campos de Formatar > Filtro vazios | Passar `'tabela', 'coluna'` no JS ou preencher Formatar > Filtro. |
+| "Chave da API do Gemini não configurada" | Campo Formatar > IA (Gemini) > Chave da API vazio | Colar a chave no painel Formatar ou configurar o Endpoint Customizado. |
+| Texto da IA num bloco só, com `**` à mostra | Regex `/\\n/g` (barra dupla) e markdown não convertido | Usar `/\n/g` e converter `**negrito**`, como no exemplo 04. |
+| `pbi.baixar` devolve `false` | Tipo passado como MIME (`text/csv`), download bloqueado pelo administrador ou cancelado | Passar `'csv'`; no Serviço, pedir ao admin a opção "Permitir downloads de visuais personalizados". |

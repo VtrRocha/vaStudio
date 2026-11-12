@@ -1,7 +1,17 @@
 // ==============================================================================
 // VA STUDIO - EXEMPLO 02: TABELA INTERATIVA COM BUSCA E FILTRO CRUZADO
-// Objetivo: Exibir Top Clientes/Produtos com campo de pesquisa em tempo real,
-//           ordenação e disparo de filtro na página com `pbi.filtrar()`.
+// Objetivo: Exibir o ranking dos Top 50 Clientes/Produtos (do maior para o menor)
+//           com campo de pesquisa em tempo real e clique na linha para filtrar
+//           a página com `pbi.filtrar()`.
+// ==============================================================================
+// O QUE TROCAR PELOS NOMES DO SEU MODELO
+//   fVendas                -> sua tabela fato
+//   dCliente[NomeCliente]  -> coluna do item listado (aparece no DAX e no JS)
+//   dCliente[Regional]     -> segunda coluna de texto da tabela
+//   [Total Vendas]         -> medida que ordena o ranking e preenche "Venda"
+//   [% Margem]             -> medida da coluna "Margem"
+//   No JS, em pbi.filtrar([d.nome], 'dCliente', 'NomeCliente'), informe a mesma
+//   tabela e coluna do item listado: é ela que o clique filtra na página.
 // ==============================================================================
 
 Tabela Interativa Clientes = 
@@ -99,6 +109,14 @@ RETURN
     return { nome: p[0] || '', reg: p[1] || '', venda: Number(p[2] || 0), margem: p[3] || '0%' };
   });
 
+  // O DAX não garante a ordem das linhas: ordena o ranking aqui, do maior para o menor
+  dados.sort(function(a, b) { return b.venda - a.venda; });
+
+  // Textos do modelo vão para a tela sempre escapados, para um nome com HTML não virar código
+  function escapar(texto) {
+    return String(texto).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   var tbCorpo = document.getElementById('tbCorpo');
   var inpBusca = document.getElementById('inpBusca');
   var btnLimpar = document.getElementById('btnLimpar');
@@ -112,10 +130,10 @@ RETURN
       var vFmt = d.venda.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
       
       tr.innerHTML = 
-        '<td>' + d.nome + '</td>' +
-        '<td>' + d.reg + '</td>' +
+        '<td>' + escapar(d.nome) + '</td>' +
+        '<td>' + escapar(d.reg) + '</td>' +
         '<td style=""text-align:right;font-weight:600;"">' + vFmt + '</td>' +
-        '<td style=""text-align:right;"">' + d.margem + '</td>';
+        '<td style=""text-align:right;"">' + escapar(d.margem) + '</td>';
       
       tr.addEventListener('click', function() {
         if (itemSelecionado === d.nome) {

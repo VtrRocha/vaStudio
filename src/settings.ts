@@ -8,20 +8,22 @@ import FormattingSettingsModel = formattingSettings.Model;
 
 /**
  * Coluna padrão que pbi.filtrar(valores) filtra quando o JS não informa tabela/coluna.
+ * Vem vazia de propósito: sem tabela/coluna o visual mostra "Filtro não configurado"
+ * em vez de filtrar uma coluna que não existe no modelo de quem instalou.
  */
 class FiltroCardSettings extends FormattingSettingsCard {
     tabela = new formattingSettings.TextInput({
         name: "tabela",
         displayName: "Tabela",
-        value: "fVendas",
-        placeholder: "ex.: fVendas"
+        value: "",
+        placeholder: "ex.: dCliente"
     });
 
     coluna = new formattingSettings.TextInput({
         name: "coluna",
         displayName: "Coluna",
-        value: "Campanha",
-        placeholder: "ex.: Campanha"
+        value: "",
+        placeholder: "ex.: NomeCliente"
     });
 
     name: string = "filtro";
