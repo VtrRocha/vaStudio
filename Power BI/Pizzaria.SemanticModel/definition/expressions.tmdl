@@ -1,2 +1,2 @@
-expression PastaDados = "https://raw.githubusercontent.com/VtrRocha/vaStudio/main/Power%20BI/dados" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression PastaDados = "https://raw.githubusercontent.com/VtrRocha/vaStudio/refs/heads/main/Power%20BI/dados" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	lineageTag: 4a12b34c-5d6e-4f7a-8b9c-1d2e3f4a5b6c
