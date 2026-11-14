@@ -21,4 +21,5 @@
 - **10/11/2026**: Adição da pasta de skill original (`skill`) do visual, mantendo a estrutura original (`instalar.ps1` e `SKILL.md`).
 - **12/11/2026**: Versão 1.1.1 — filtro padrão vazio, `skill/instalar.ps1` reescrito para a estrutura deste repositório (sem apagar o destino), `skill/SKILL.md` atualizado para "VA Studio", correção das quebras de linha e do markdown no exemplo 04, bloco "O QUE TROCAR" no topo dos exemplos e README corrigido (`pbi.baixar`, chave do Gemini, HTML Content como visual de terceiros).
 - **12/11/2026**: Revisão para o público — README com API completa, seções de Segurança e Privacidade, visual não certificado e skill; cabeçalhos dos exemplos alinhados ao que o código faz; exemplos 02, 03 e 04 passam a escapar os textos do modelo e o ranking do 02 é ordenado no JS.
+- **14/11/2026**: Adição do projeto demonstrativo em PBIP (`Power BI/Pizzaria.pbip`) conectado aos CSVs públicos de `Power BI/dados/` via parâmetro `PastaDados` (`Web.Contents`), exemplo `exemplos/05-dashboard-executivo-pizzaria.dax` com tema Black/White persistido em `pbi.estado` e assistente `Pizz.IA`, além das capturas de tela em `assets/` e atualização do `README.md`.
 

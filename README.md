@@ -34,6 +34,22 @@ Com o **VA Studio**, sua medida DAX ganha vida e controle total da página:
 
 ---
 
+## 🖼️ Exemplo em Produção (`Power BI/Pizzaria.pbip`)
+
+Projeto completo em formato **PBIP** já configurado no repositório com dados públicos em CSV e dashboard executivo de página única construído com o **VA Studio** (alternância de tema **Black / White**, Curva ABC interativa, mapa de calor por dia × hora, visão de mix e estoque, exportação CSV e assistente analítico **Pizz.IA**).
+
+![Dashboard Executivo Pizzaria no VA Studio](assets/dashboard-pizzaria.jpg)
+
+![Assistente Pizz.IA com Gemini no VA Studio](assets/dashboard-pizzaria-ia.jpg)
+
+### Como abrir o projeto de exemplo no Power BI Desktop
+1. Clone ou baixe este repositório e abra o arquivo **[`Power BI/Pizzaria.pbip`](Power%20BI/Pizzaria.pbip)**.
+2. As tabelas consomem diretamente os 6 CSVs públicos de [`Power BI/dados/`](Power%20BI/dados/) através do parâmetro `PastaDados` (`Web.Contents`).
+3. Ao atualizar o modelo pela primeira vez, selecione o método de autenticação **Anônimo** para `raw.githubusercontent.com`.
+4. *(Opcional)* Para habilitar a **Pizz.IA**, informe sua própria chave da API do Google Gemini em **Formatar > IA (Gemini) > Chave da API** (ou configure um Endpoint Customizado).
+
+---
+
 ## 🛠️ Como Utilizar em um Relatório
 
 1. Crie uma **Medida DAX** que retorne uma string contendo seu HTML, CSS e JavaScript.
@@ -156,6 +172,7 @@ Na pasta **[`exemplos/`](exemplos/)** você encontra códigos DAX prontos. Eles 
 * **[`02-tabela-com-busca-e-filtro.dax`](exemplos/02-tabela-com-busca-e-filtro.dax)**: Ranking dos 50 maiores clientes com campo de pesquisa em tempo real e clique na linha para filtrar a página do Power BI.
 * **[`03-segmentador-botoes.dax`](exemplos/03-segmentador-botoes.dax)**: Segmentador de botões em pílula, com seleção única, para substituir segmentações padrão.
 * **[`04-painel-analise-ia.dax`](exemplos/04-painel-analise-ia.dax)**: Painel executivo integrado ao Gemini para gerar parecer de negócio automático (exige a chave da API em **Formatar > IA (Gemini)**).
+* **[`05-dashboard-executivo-pizzaria.dax`](exemplos/05-dashboard-executivo-pizzaria.dax)**: Dashboard executivo completo com tema **Black / White** (`pbi.estado`), sparklines, mapa de calor, tabela ABC com filtro cruzado, análise de estoque e assistente **Pizz.IA** (`pbi.perguntarIA`).
 
 ---
 
