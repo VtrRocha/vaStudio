@@ -33,3 +33,8 @@ table dPizzaTipo
 				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"ID Sabor", type text}, {"Sabor", type text}, {"Categoria", type text}, {"Ingredientes", type text}}, "en-US")
 				in
 				    Tipos
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

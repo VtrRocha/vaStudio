@@ -37,5 +37,8 @@ table fItemPedido
 				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"ID Item", Int64.Type}, {"ID Pedido", Int64.Type}, {"ID Pizza", type text}, {"Quantidade", Int64.Type}}, "en-US")
 				in
 				    Tipos
-	annotation PBI_ResultType = Exception
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
 

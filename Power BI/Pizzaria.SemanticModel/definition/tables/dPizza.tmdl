@@ -36,5 +36,8 @@ table dPizza
 				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"ID Pizza", type text}, {"ID Sabor", type text}, {"Tamanho", type text}, {"Preço", Currency.Type}}, "en-US")
 				in
 				    Tipos
-	annotation PBI_ResultType = Exception
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
 

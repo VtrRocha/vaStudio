@@ -62,3 +62,8 @@ table fEstoque
 				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"Data", type date}, {"ID Ingrediente", Int64.Type}, {"Estoque Inicial", type number}, {"Entrada", type number}, {"Consumo", type number}, {"Estoque Final", type number}}, "en-US")
 				in
 				    Tipos
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

@@ -50,5 +50,8 @@ table dPedido
 				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"ID Pedido", Int64.Type}, {"Data", type date}, {"Hora", type time}}, "en-US")
 				in
 				    Tipos
-	annotation PBI_ResultType = Exception
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navegação
 

@@ -91,3 +91,8 @@ table dIngrediente
 				    Colunas = Table.SelectColumns(Tipos, {"ID Ingrediente", "Ingrediente", "Grupo", "Unidade", "Porção M (g)", "Estoque Mínimo (g)", "Estoque Alvo (g)"})
 				in
 				    Colunas
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
