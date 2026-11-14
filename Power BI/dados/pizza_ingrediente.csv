@@ -1,0 +1,65 @@
+ingrediente_id,nome,grupo,unidade,porcao_m,custo_kg,estoque_minimo,estoque_alvo
+1,Alfredo Sauce,Molho,g,70.0,5.5,589.15,2749.37
+2,Anchovies,Proteína,g,60.0,24.0,749.98,3499.92
+3,Artichoke,Vegetal,g,40.0,11.0,2809.27,13109.91
+4,Arugula,Vegetal,g,40.0,4.0,487.25,2273.83
+5,Asiago Cheese,Queijo,g,60.0,12.0,1748.74,8160.77
+6,Bacon,Proteína,g,60.0,13.5,1833.85,8557.99
+7,Barbecue Sauce,Molho,g,70.0,5.5,1515.45,7072.11
+8,Barbecued Chicken,Proteína,g,60.0,9.5,1298.96,6061.81
+9,Beef Chuck Roast,Proteína,g,60.0,16.0,905.05,4223.59
+10,Blue Cheese,Queijo,g,60.0,12.0,938.05,4377.55
+11,Brie Carre Cheese,Queijo,g,60.0,24.0,169.15,789.37
+12,Calabrese Salami,Proteína,g,60.0,15.0,1029.03,4802.15
+13,Capocollo,Proteína,g,60.0,15.0,3685.46,17198.83
+14,Caramelized Onions,Vegetal,g,40.0,4.0,112.77,526.25
+15,Chicken,Proteína,g,60.0,9.5,4672.6,21805.48
+16,Chipotle Sauce,Molho,g,70.0,5.5,2244.61,10474.86
+17,Chorizo Sausage,Proteína,g,60.0,15.0,660.72,3083.38
+18,Cilantro,Tempero,g,2.0,16.0,64.13,299.28
+19,Coarse Sicilian Salami,Proteína,g,60.0,15.0,950.42,4435.32
+20,Corn,Vegetal,g,40.0,4.0,1282.64,5985.63
+21,Eggplant,Vegetal,g,40.0,4.0,314.3,1466.74
+22,Feta Cheese,Queijo,g,60.0,12.0,2531.02,11811.44
+23,Fontina Cheese,Queijo,g,60.0,12.0,1756.16,8195.41
+24,Friggitello Peppers,Vegetal,g,40.0,4.0,330.05,1540.23
+25,Garlic,Tempero,g,8.0,7.0,2007.52,9368.42
+26,Genoa Salami,Proteína,g,60.0,15.0,785.59,3666.08
+27,Goat Cheese,Queijo,g,60.0,20.0,1870.84,8730.59
+28,Gorgonzola Piccante Cheese,Queijo,g,60.0,20.0,1165.12,5437.22
+29,Gouda Cheese,Queijo,g,60.0,12.0,1254.95,5856.41
+30,Green Olives,Vegetal,g,40.0,4.0,2099.16,9796.09
+31,Green Peppers,Vegetal,g,40.0,4.0,1805.01,8423.4
+32,Italian Sausage,Proteína,g,60.0,15.0,660.72,3083.38
+33,Jalapeno Peppers,Vegetal,g,40.0,4.0,2119.27,9889.91
+34,Kalamata Olives,Vegetal,g,40.0,4.0,1229.95,5739.77
+35,Luganega Sausage,Proteína,g,60.0,15.0,950.42,4435.32
+36,Mozzarella Cheese,Queijo,g,60.0,12.0,5744.37,26807.05
+37,Mushrooms,Vegetal,g,40.0,4.0,3154.77,14722.25
+38,Onions,Vegetal,g,40.0,4.0,633.62,2956.88
+39,Oregano,Tempero,g,2.0,16.0,26.36,123.02
+40,Pancetta,Proteína,g,60.0,13.5,495.07,2310.35
+41,Parmigiano Reggiano Cheese,Queijo,g,60.0,27.0,1165.12,5437.22
+42,Pears,Fruta,g,50.0,4.8,140.96,657.81
+43,Peperoncini verdi,Vegetal,g,40.0,4.0,720.02,3360.08
+44,Pepperoni,Proteína,g,60.0,15.0,4935.55,23032.57
+45,Pesto Sauce,Molho,g,70.0,5.5,1684.29,7860.0
+46,Pineapple,Fruta,g,50.0,4.8,2119.79,9892.34
+47,Plum Tomatoes,Vegetal,g,40.0,4.0,321.14,1498.65
+48,Prosciutto,Proteína,g,60.0,38.0,169.15,789.37
+49,Prosciutto di San Daniele,Proteína,g,60.0,38.0,730.87,3410.75
+50,Provolone Cheese,Queijo,g,60.0,12.0,938.05,4377.55
+51,Red Onions,Vegetal,g,40.0,4.0,7001.74,32674.77
+52,Red Peppers,Vegetal,g,40.0,4.0,5844.76,27275.53
+53,Ricotta Cheese,Queijo,g,60.0,12.0,1165.12,5437.22
+54,Romano Cheese,Queijo,g,60.0,12.0,938.05,4377.55
+55,Sliced Ham,Proteína,g,60.0,15.0,1202.13,5609.93
+56,Smoked Gouda Cheese,Queijo,g,60.0,12.0,938.05,4377.55
+57,Soppressata Salami,Proteína,g,60.0,15.0,501.21,2339.0
+58,Spinach,Vegetal,g,40.0,4.0,3379.27,15769.91
+59,Sun-dried Tomatoes,Vegetal,g,40.0,16.0,632.88,2953.42
+60,Thai Sweet Chilli Sauce,Molho,g,70.0,5.5,1565.22,7304.36
+61,Thyme,Tempero,g,2.0,16.0,5.64,26.31
+62,Tomatoes,Vegetal,g,40.0,4.0,9619.51,44891.06
+63,Zucchini,Vegetal,g,40.0,4.0,819.37,3823.73
+64,‘Nduja Salami,Proteína,g,60.0,15.0,495.07,2310.35

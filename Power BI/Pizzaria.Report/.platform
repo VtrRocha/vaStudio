@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Pizzaria"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f5767655-ddd7-4943-953b-68b7f587ab8d"
+  }
+}

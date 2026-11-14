@@ -1,0 +1,35 @@
+/// Sabores da pizzaria (dados em CSV). Fonte: Pizza Place Sales (Kaggle, CC0).
+table dPizzaTipo
+	lineageTag: 5c9a5b24-ab7a-4796-8024-dcd4137b72aa
+
+	column 'ID Sabor'
+		dataType: string
+		lineageTag: 2262b0da-4ddf-4e8c-a135-7d8cdaa0a3cd
+		sourceColumn: ID Sabor
+
+	column Sabor
+		dataType: string
+		lineageTag: f4ffb24d-a3c4-4503-a5d6-336079a4397a
+		sourceColumn: Sabor
+
+	column Categoria
+		dataType: string
+		lineageTag: d9098a30-8660-4546-96df-2b25ea3e26a4
+		sourceColumn: Categoria
+
+	column Ingredientes
+		dataType: string
+		lineageTag: 73181865-55ef-4a46-a36a-33376546be37
+		sourceColumn: Ingredientes
+
+	partition dPizzaTipo = m
+		mode: import
+		source =
+				let
+				    BaseUrl = Text.TrimEnd(Text.Trim(PastaDados), "/"),
+				    Fonte = Csv.Document(Web.Contents(BaseUrl, [RelativePath = "pizza_tipo.csv"]), [Delimiter=",", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Cabecalhos = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    Renomeadas = Table.RenameColumns(Cabecalhos, {{"pizza_type_id", "ID Sabor"}, {"name", "Sabor"}, {"category", "Categoria"}, {"ingredients", "Ingredientes"}}),
+				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"ID Sabor", type text}, {"Sabor", type text}, {"Categoria", type text}, {"Ingredientes", type text}}, "en-US")
+				in
+				    Tipos

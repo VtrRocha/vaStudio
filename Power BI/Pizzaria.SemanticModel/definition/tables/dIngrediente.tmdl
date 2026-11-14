@@ -1,0 +1,93 @@
+/// Ingredientes da pizzaria extraídos dos sabores (dados em CSV). Porção, custo por kg, mínimo e alvo são premissas simuladas.
+table dIngrediente
+	lineageTag: 9cbd6de8-517e-48ef-ad82-768bbb7bb9c7
+
+	column 'ID Ingrediente'
+		dataType: int64
+		isHidden
+		lineageTag: dd64bc68-0171-469e-8cf6-faf954485316
+		summarizeBy: none
+		sourceColumn: ID Ingrediente
+
+	column Ingrediente
+		dataType: string
+		lineageTag: 49ccebe9-dc2b-4320-a8c9-f487ad93afc4
+		summarizeBy: none
+		sourceColumn: Ingrediente
+
+	/// Queijo, Proteína, Vegetal, Molho, Tempero ou Fruta.
+	column Grupo
+		dataType: string
+		lineageTag: fec9c15a-b7ef-4631-8c6e-59f29d6aa6c3
+		summarizeBy: none
+		sourceColumn: Grupo
+
+	column Unidade
+		dataType: string
+		lineageTag: 50ec125a-b4a0-43b9-a308-668835e8e59f
+		summarizeBy: none
+		sourceColumn: Unidade
+
+	/// Gramas por pizza tamanho M (premissa).
+	column 'Porção M (g)'
+		dataType: double
+		formatString: #,0" g"
+		lineageTag: 5193ce0d-5900-4bb2-b007-4bca59f1db86
+		summarizeBy: none
+		sourceColumn: Porção M (g)
+
+	/// Ponto de reposição: 3 dias de consumo médio.
+	column 'Estoque Mínimo (g)'
+		dataType: double
+		formatString: #,0" g"
+		lineageTag: 5021d037-54cb-4616-864d-020498a8aa52
+		summarizeBy: none
+		sourceColumn: Estoque Mínimo (g)
+
+	/// Nível de reposição semanal: 14 dias de consumo médio.
+	column 'Estoque Alvo (g)'
+		dataType: double
+		formatString: #,0" g"
+		lineageTag: 1ae3065c-181f-4e9b-b244-0e36486af7d7
+		summarizeBy: none
+		sourceColumn: Estoque Alvo (g)
+
+	/// Custo realista do ingrediente em US$ por kg (premissa foodservice).
+	column 'Custo por kg (US$)' =
+			VAR _n = LOWER ( dIngrediente[Ingrediente] )
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        CONTAINSSTRING ( _n, "prosciutto" ), 38,
+			        CONTAINSSTRING ( _n, "parmigiano" ), 27,
+			        CONTAINSSTRING ( _n, "brie" ) || CONTAINSSTRING ( _n, "anchov" ), 24,
+			        CONTAINSSTRING ( _n, "gorgonzola" ) || CONTAINSSTRING ( _n, "goat" ), 20,
+			        CONTAINSSTRING ( _n, "sun-dried" ) || CONTAINSSTRING ( _n, "beef" ), 16,
+			        CONTAINSSTRING ( _n, "bacon" ) || CONTAINSSTRING ( _n, "pancetta" ), 13.5,
+			        CONTAINSSTRING ( _n, "artichoke" ), 11,
+			        CONTAINSSTRING ( _n, "chicken" ), 9.5,
+			        _n = "garlic", 7,
+			        dIngrediente[Grupo] = "Queijo", 12,
+			        dIngrediente[Grupo] = "Proteína", 15,
+			        dIngrediente[Grupo] = "Molho", 5.5,
+			        dIngrediente[Grupo] = "Fruta", 4.8,
+			        dIngrediente[Grupo] = "Tempero", 16,
+			        4
+			    )
+		dataType: double
+		formatString: \$#,0.00
+		lineageTag: 770b8157-a1fe-4a5c-8309-b642c6c6f096
+		summarizeBy: none
+
+	partition dIngrediente = m
+		mode: import
+		source =
+				let
+				    BaseUrl = Text.TrimEnd(Text.Trim(PastaDados), "/"),
+				    Fonte = Csv.Document(Web.Contents(BaseUrl, [RelativePath = "pizza_ingrediente.csv"]), [Delimiter=",", Columns=8, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Cabecalhos = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    Renomeadas = Table.RenameColumns(Cabecalhos, {{"ingrediente_id", "ID Ingrediente"}, {"nome", "Ingrediente"}, {"grupo", "Grupo"}, {"unidade", "Unidade"}, {"porcao_m", "Porção M (g)"}, {"estoque_minimo", "Estoque Mínimo (g)"}, {"estoque_alvo", "Estoque Alvo (g)"}}),
+				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"ID Ingrediente", Int64.Type}, {"Ingrediente", type text}, {"Grupo", type text}, {"Unidade", type text}, {"Porção M (g)", type number}, {"Estoque Mínimo (g)", type number}, {"Estoque Alvo (g)", type number}}, "en-US"),
+				    Colunas = Table.SelectColumns(Tipos, {"ID Ingrediente", "Ingrediente", "Grupo", "Unidade", "Porção M (g)", "Estoque Mínimo (g)", "Estoque Alvo (g)"})
+				in
+				    Colunas

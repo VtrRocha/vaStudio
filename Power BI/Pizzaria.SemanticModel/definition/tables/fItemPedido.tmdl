@@ -1,0 +1,41 @@
+/// Itens dos pedidos: uma pizza (com quantidade) por linha (dados em CSV).
+table fItemPedido
+	lineageTag: f236a2ac-38b4-4a7b-8df8-1f3a80401c64
+
+	column 'ID Item'
+		dataType: int64
+		isHidden
+		lineageTag: cf515ebd-6d1f-4fbb-af0b-5cf961cddbf7
+		sourceColumn: ID Item
+
+	column 'ID Pedido'
+		dataType: int64
+		isHidden
+		lineageTag: 1beeb07f-c0cb-4cb8-aa87-9e1006a9554f
+		sourceColumn: ID Pedido
+
+	column 'ID Pizza'
+		dataType: string
+		isHidden
+		lineageTag: b1917da1-aa89-4d23-a20e-c83bde3cd645
+		sourceColumn: ID Pizza
+
+	column Quantidade
+		dataType: int64
+		lineageTag: 1581cc49-31cf-484c-bb9b-352715696694
+		summarizeBy: sum
+		sourceColumn: Quantidade
+
+	partition fItemPedido = m
+		mode: import
+		source =
+				let
+				    BaseUrl = Text.TrimEnd(Text.Trim(PastaDados), "/"),
+				    Fonte = Csv.Document(Web.Contents(BaseUrl, [RelativePath = "pizza_item.csv"]), [Delimiter=",", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Cabecalhos = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    Renomeadas = Table.RenameColumns(Cabecalhos, {{"order_details_id", "ID Item"}, {"order_id", "ID Pedido"}, {"pizza_id", "ID Pizza"}, {"quantity", "Quantidade"}}),
+				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"ID Item", Int64.Type}, {"ID Pedido", Int64.Type}, {"ID Pizza", type text}, {"Quantidade", Int64.Type}}, "en-US")
+				in
+				    Tipos
+	annotation PBI_ResultType = Exception
+

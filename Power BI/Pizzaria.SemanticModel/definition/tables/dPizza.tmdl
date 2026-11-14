@@ -1,0 +1,40 @@
+/// Pizza à venda: sabor × tamanho com preço em US$ (dados em CSV).
+table dPizza
+	lineageTag: 62f45473-218a-4f12-8031-2bab8a532133
+
+	column 'ID Pizza'
+		dataType: string
+		lineageTag: a8c473b2-2942-4545-92cb-c06e8bd3e073
+		sourceColumn: ID Pizza
+
+	column 'ID Sabor'
+		dataType: string
+		isHidden
+		lineageTag: 0ca2a88d-bd58-4075-b004-b4f05d541f1e
+		sourceColumn: ID Sabor
+
+	column Tamanho
+		dataType: string
+		lineageTag: f937ac62-f86c-49d0-b0fe-e2981931dd64
+		sourceColumn: Tamanho
+
+	column Preço
+		dataType: decimal
+		formatString: \$#,0.00
+		lineageTag: c1a97916-5ad3-42b0-b170-fd03228d1dc6
+		summarizeBy: none
+		sourceColumn: Preço
+
+	partition dPizza = m
+		mode: import
+		source =
+				let
+				    BaseUrl = Text.TrimEnd(Text.Trim(PastaDados), "/"),
+				    Fonte = Csv.Document(Web.Contents(BaseUrl, [RelativePath = "pizza_produto.csv"]), [Delimiter=",", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Cabecalhos = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    Renomeadas = Table.RenameColumns(Cabecalhos, {{"pizza_id", "ID Pizza"}, {"pizza_type_id", "ID Sabor"}, {"size", "Tamanho"}, {"price", "Preço"}}),
+				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"ID Pizza", type text}, {"ID Sabor", type text}, {"Tamanho", type text}, {"Preço", Currency.Type}}, "en-US")
+				in
+				    Tipos
+	annotation PBI_ResultType = Exception
+

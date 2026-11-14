@@ -1,0 +1,24 @@
+relationship 'dPizza_ID Sabor_dPizzaTipo_ID Sabor'
+	fromColumn: dPizza.'ID Sabor'
+	toColumn: dPizzaTipo.'ID Sabor'
+
+relationship 'fItemPedido_ID Pizza_dPizza_ID Pizza'
+	fromColumn: fItemPedido.'ID Pizza'
+	toColumn: dPizza.'ID Pizza'
+
+relationship 'fItemPedido_ID Pedido_dPedido_ID Pedido'
+	fromColumn: fItemPedido.'ID Pedido'
+	toColumn: dPedido.'ID Pedido'
+
+relationship dPedido_Data_dCalendario_Data
+	fromColumn: dPedido.Data
+	toColumn: dCalendario.Data
+
+relationship fEstoque_Data_dCalendario_Data
+	fromColumn: fEstoque.Data
+	toColumn: dCalendario.Data
+
+relationship 'fEstoque_ID Ingrediente_dIngrediente_ID Ingrediente'
+	fromColumn: fEstoque.'ID Ingrediente'
+	toColumn: dIngrediente.'ID Ingrediente'
+

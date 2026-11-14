@@ -1,0 +1,64 @@
+/// Posição diária do estoque por ingrediente (dados em CSV). Consumo derivado das vendas; compras simuladas às segundas.
+table fEstoque
+	lineageTag: 7ca1950b-3699-41d3-bd6d-1c4d5c224a2f
+
+	column Data
+		dataType: dateTime
+		isHidden
+		formatString: dd/mm/yyyy
+		lineageTag: a499e4a3-e228-456c-8290-79e9b0f380b0
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'ID Ingrediente'
+		dataType: int64
+		isHidden
+		lineageTag: d68218c4-fdfe-47a0-9798-362673488965
+		summarizeBy: none
+		sourceColumn: ID Ingrediente
+
+	column 'Estoque Inicial'
+		dataType: double
+		isHidden
+		formatString: #,0" g"
+		lineageTag: dd8218fa-8734-4a82-a4ce-c80a99c6d6ed
+		summarizeBy: none
+		sourceColumn: Estoque Inicial
+
+	column Entrada
+		dataType: double
+		isHidden
+		formatString: #,0" g"
+		lineageTag: b66d12ef-0b4c-41b0-ad64-109f41882417
+		summarizeBy: none
+		sourceColumn: Entrada
+
+	column Consumo
+		dataType: double
+		isHidden
+		formatString: #,0" g"
+		lineageTag: be6443f4-7520-4fc9-84ee-7c1aaad6b565
+		summarizeBy: none
+		sourceColumn: Consumo
+
+	column 'Estoque Final'
+		dataType: double
+		isHidden
+		formatString: #,0" g"
+		lineageTag: b13d1bf2-b5e5-4b92-8785-cc4d06c1539b
+		summarizeBy: none
+		sourceColumn: Estoque Final
+
+	partition fEstoque = m
+		mode: import
+		source =
+				let
+				    BaseUrl = Text.TrimEnd(Text.Trim(PastaDados), "/"),
+				    Fonte = Csv.Document(Web.Contents(BaseUrl, [RelativePath = "pizza_estoque.csv"]), [Delimiter=",", Columns=6, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Cabecalhos = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    Renomeadas = Table.RenameColumns(Cabecalhos, {{"data", "Data"}, {"ingrediente_id", "ID Ingrediente"}, {"estoque_inicial", "Estoque Inicial"}, {"entrada", "Entrada"}, {"consumo", "Consumo"}, {"estoque_final", "Estoque Final"}}),
+				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"Data", type date}, {"ID Ingrediente", Int64.Type}, {"Estoque Inicial", type number}, {"Entrada", type number}, {"Consumo", type number}, {"Estoque Final", type number}}, "en-US")
+				in
+				    Tipos

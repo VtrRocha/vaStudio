@@ -1,0 +1,91 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "377c50ed0702870032de",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 1,
+    "height": 1080.4676539360873,
+    "width": 1920,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "htmlJsStudioECDA55D8A9E74168A5FFE5D14050141E",
+    "query": {
+      "queryState": {
+        "html": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "HTML Dashboard Pizzaria"
+                }
+              },
+              "queryRef": "Medidas.HTML Dashboard Pizzaria",
+              "nativeQueryRef": "HTML Dashboard Pizzaria"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "general": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "7a448f79a5a1324ec2ac",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Medidas"
+              }
+            },
+            "Property": "HTML Dashboard Pizzaria"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

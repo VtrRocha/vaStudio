@@ -1,0 +1,96 @@
+/// Calendário diário cobrindo os anos completos dos pedidos (dPedido[Data]).
+table dCalendario
+	lineageTag: 6ffe93dd-3410-4f06-a0a8-8b6857d19b74
+	dataCategory: Time
+
+	column Data
+		isUnique
+		formatString: dd/mm/yyyy
+		lineageTag: f1fa936f-18e2-4ec4-9afa-42a22334a51a
+		sourceColumn: [Date]
+
+	column Ano
+		lineageTag: a3907ff0-082a-4818-bd2e-85f739d19eac
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Ano]
+
+	column Mês
+		lineageTag: dbe924e2-2aec-4dc4-8ab6-6967e91a4c57
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Mês]
+
+	column 'Nome do Mês'
+		lineageTag: fc87b334-2a8d-465b-a900-f950122b1416
+		isNameInferred
+		sourceColumn: [Nome do Mês]
+		sortByColumn: Mês
+
+	column 'Mês Abrev'
+		lineageTag: d49c235a-b5e0-4012-ae33-67a51367bb86
+		isNameInferred
+		sourceColumn: [Mês Abrev]
+		sortByColumn: Mês
+
+	column 'Ano Mês'
+		lineageTag: f63173bf-a505-4733-97d5-5524b2d807ef
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Ano Mês]
+
+	column Trimestre
+		lineageTag: c3190af5-55bc-4e63-a58b-a4dad6244672
+		isNameInferred
+		sourceColumn: [Trimestre]
+
+	column Dia
+		lineageTag: b5b8482f-05df-4bbc-b9cf-5b13b8f3bf3c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Dia]
+
+	column 'Dia da Semana Nº'
+		lineageTag: 53bdee78-b756-406c-87dd-4858500654be
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Dia da Semana Nº]
+
+	column 'Dia da Semana'
+		lineageTag: 367cda4b-d9ef-41cb-a068-cae89da588b1
+		isNameInferred
+		sourceColumn: [Dia da Semana]
+		sortByColumn: 'Dia da Semana Nº'
+
+	column 'Semana do Ano'
+		lineageTag: 343b7609-9b1e-49c9-8dba-6b140ce859f1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Semana do Ano]
+
+	column 'Fim de Semana'
+		lineageTag: 255b21aa-b95b-4ad6-a920-f9cdaa21fbe8
+		isNameInferred
+		sourceColumn: [Fim de Semana]
+
+	partition dCalendario = calculated
+		mode: import
+		source =
+				VAR _ini = DATE(YEAR(MIN(dPedido[Data])), 1, 1)
+				VAR _fim = DATE(YEAR(MAX(dPedido[Data])), 12, 31)
+				RETURN
+				ADDCOLUMNS(
+				    CALENDAR(_ini, _fim),
+				    "Ano", YEAR([Date]),
+				    "Mês", MONTH([Date]),
+				    "Nome do Mês", SWITCH(MONTH([Date]), 1,"Janeiro",2,"Fevereiro",3,"Março",4,"Abril",5,"Maio",6,"Junho",7,"Julho",8,"Agosto",9,"Setembro",10,"Outubro",11,"Novembro",12,"Dezembro"),
+				    "Mês Abrev", SWITCH(MONTH([Date]), 1,"jan",2,"fev",3,"mar",4,"abr",5,"mai",6,"jun",7,"jul",8,"ago",9,"set",10,"out",11,"nov",12,"dez"),
+				    "Ano Mês", YEAR([Date]) * 100 + MONTH([Date]),
+				    "Trimestre", "T" & QUARTER([Date]),
+				    "Dia", DAY([Date]),
+				    "Dia da Semana Nº", WEEKDAY([Date], 2),
+				    "Dia da Semana", SWITCH(WEEKDAY([Date], 2), 1,"Segunda",2,"Terça",3,"Quarta",4,"Quinta",5,"Sexta",6,"Sábado",7,"Domingo"),
+				    "Semana do Ano", WEEKNUM([Date], 2),
+				    "Fim de Semana", IF(WEEKDAY([Date], 2) >= 6, "Sim", "Não")
+				)
+

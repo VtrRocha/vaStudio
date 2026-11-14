@@ -1,0 +1,54 @@
+/// Pedidos com data e hora (dados em CSV).
+table dPedido
+	lineageTag: 5c8393ae-05ff-4e97-8d2f-16811f52c327
+
+	column 'ID Pedido'
+		dataType: int64
+		lineageTag: caa3357f-5d75-4963-9e9e-ddc5e1544b56
+		summarizeBy: none
+		sourceColumn: ID Pedido
+
+		annotation SummarizationSetBy = Automatic
+
+	column Data
+		dataType: dateTime
+		isHidden
+		formatString: dd/mm/yyyy
+		lineageTag: c74bba22-553f-4c71-9266-9dad37742fd3
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Hora
+		dataType: dateTime
+		formatString: hh:nn:ss
+		lineageTag: de85195e-ede6-4b1f-bff6-51aca0e6cad3
+		summarizeBy: none
+		sourceColumn: Hora
+
+		annotation UnderlyingDateTimeDataType = Time
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Hora do pedido sem minutos (0 a 23), para análises por faixa horária.
+	column 'Hora Cheia' = HOUR(dPedido[Hora])
+		dataType: int64
+		lineageTag: 4007705e-ef4f-4409-b2c2-dae1f200ff5a
+		summarizeBy: none
+
+	partition dPedido = m
+		mode: import
+		source =
+				let
+				    BaseUrl = Text.TrimEnd(Text.Trim(PastaDados), "/"),
+				    Fonte = Csv.Document(Web.Contents(BaseUrl, [RelativePath = "pizza_pedido.csv"]), [Delimiter=",", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Cabecalhos = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    Renomeadas = Table.RenameColumns(Cabecalhos, {{"order_id", "ID Pedido"}, {"date", "Data"}, {"time", "Hora"}}),
+				    Tipos = Table.TransformColumnTypes(Renomeadas, {{"ID Pedido", Int64.Type}, {"Data", type date}, {"Hora", type time}}, "en-US")
+				in
+				    Tipos
+	annotation PBI_ResultType = Exception
+

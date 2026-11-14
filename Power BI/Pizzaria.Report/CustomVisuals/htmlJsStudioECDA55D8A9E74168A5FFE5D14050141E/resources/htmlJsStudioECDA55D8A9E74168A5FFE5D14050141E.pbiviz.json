@@ -1,0 +1,114 @@
+{
+  "visual": {
+    "name": "vaStudio",
+    "displayName": "VA Studio",
+    "guid": "htmlJsStudioECDA55D8A9E74168A5FFE5D14050141E",
+    "visualClassName": "Visual",
+    "version": "1.1.1.0",
+    "description": "Renderiza o HTML de uma medida DAX e executa o CSS e o JavaScript dele. O JS pode filtrar os outros visuais com pbi.filtrar(valores), baixar arquivos com pbi.baixar() e consultar IA Gemini com pbi.perguntarIA().",
+    "supportUrl": "https://github.com/VtrRocha/vaStudio/issues",
+    "gitHubUrl": "https://github.com/VtrRocha/vaStudio"
+  },
+  "author": {
+    "name": "Vitor Assunção Rocha",
+    "email": "vitorassuncao43@gmail.com"
+  },
+  "apiVersion": "5.11.0",
+  "style": "style/visual.less",
+  "stringResources": {},
+  "capabilities": {
+    "dataRoles": [
+      {
+        "displayName": "HTML",
+        "name": "html",
+        "kind": "Measure"
+      }
+    ],
+    "objects": {
+      "general": {
+        "properties": {
+          "filter": {
+            "type": {
+              "filter": true
+            }
+          }
+        }
+      },
+      "filtro": {
+        "properties": {
+          "tabela": {
+            "type": {
+              "text": true
+            }
+          },
+          "coluna": {
+            "type": {
+              "text": true
+            }
+          }
+        }
+      },
+      "ia": {
+        "properties": {
+          "apiKey": {
+            "type": {
+              "text": true
+            }
+          },
+          "modelo": {
+            "type": {
+              "text": true
+            }
+          },
+          "endpoint": {
+            "type": {
+              "text": true
+            }
+          },
+          "instrucao": {
+            "type": {
+              "text": true
+            }
+          }
+        }
+      }
+    },
+    "dataViewMappings": [
+      {
+        "conditions": [
+          {
+            "html": {
+              "max": 1
+            }
+          }
+        ],
+        "single": {
+          "role": "html"
+        }
+      }
+    ],
+    "privileges": [
+      {
+        "name": "ExportContent",
+        "essential": false
+      },
+      {
+        "name": "WebAccess",
+        "essential": false,
+        "parameters": [
+          "https://*"
+        ]
+      }
+    ]
+  },
+  "content": {
+    "js": "var htmlJsStudioECDA55D8A9E74168A5FFE5D14050141E;(()=>{\"use strict\";var e={754(e,t,i){i.d(t,{Kx:()=>n,St:()=>r,Tn:()=>l,ks:()=>d});var a=i(639);class o{}class s extends o{}class n{}class r extends o{}class l extends s{}class c extends o{constructor(e){super(),Object.assign(this,e)}getFormattingSlice(e,t){const i=this.type,a=this.name,o={displayName:t&&this.displayNameKey?t.getDisplayName(this.displayNameKey):this.displayName,description:t&&this.descriptionKey?t.getDisplayName(this.descriptionKey):this.description,uid:e+\"-\"+a};return Object.assign(Object.assign({},o),{control:{type:i,properties:this.getFormattingComponent(e,t)}})}getFormattingComponent(e,t){return{descriptor:a.y(e,this),value:this.value}}getRevertToDefaultDescriptor(e){return[{objectName:e,propertyName:this.name}]}setPropertiesValues(e,t){var i;const o=null===(i=null==e?void 0:e[t])||void 0===i?void 0:i[this.name];this.value=a.D(this,o,this.value)}}class d extends c{constructor(e){super(e),this.type=\"TextInput\"}getFormattingComponent(e){return Object.assign(Object.assign({},super.getFormattingComponent(e)),{placeholder:this.placeholder})}}},667(e,t,i){var a=i(754);i.d(t,[\"A\",0,class{constructor(e){this.localizationManager=e}populateFormattingSettingsModel(e,t){var i,o;const s=new e,n=null===(i=null==t?void 0:t.metadata)||void 0===i?void 0:i.objects;return n&&(null===(o=s.cards)||void 0===o||o.forEach(e=>{var t;e instanceof a.St&&(null===(t=e.topLevelSlice)||void 0===t||t.setPropertiesValues(n,e.name)),(e instanceof a.Tn?[e]:e.groups).forEach(t=>{var i,a,o,s;null===(i=t.topLevelSlice)||void 0===i||i.setPropertiesValues(n,e.name),null===(a=null==t?void 0:t.slices)||void 0===a||a.forEach(t=>{null==t||t.setPropertiesValues(n,e.name)}),null===(s=null===(o=null==t?void 0:t.container)||void 0===o?void 0:o.containerItems)||void 0===s||s.forEach(t=>{var i;null===(i=null==t?void 0:t.slices)||void 0===i||i.forEach(t=>{null==t||t.setPropertiesValues(n,e.name)})})})})),s}buildFormattingModel(e){const t={cards:[]};return e.cards.filter(({visible:e=!0})=>e).forEach(e=>{var i;const o={displayName:this.localizationManager&&e.displayNameKey?this.localizationManager.getDisplayName(e.displayNameKey):e.displayName,description:this.localizationManager&&e.descriptionKey?this.localizationManager.getDisplayName(e.descriptionKey):e.description,groups:[],uid:e.name+\"-card\",analyticsPane:e.analyticsPane},s=e.name;if(e.topLevelSlice){const t=e.topLevelSlice.getFormattingSlice(s,this.localizationManager);t.suppressDisplayName=!0,o.topLevelToggle=t}null===(i=e.onPreProcess)||void 0===i||i.call(e);const n=e instanceof a.Tn;(n?[e].filter(({visible:e=!0})=>e):e.groups.filter(({visible:e=!0})=>e)).forEach(e=>{const t=e.name+\"-group\",i={displayName:n?void 0:this.localizationManager&&e.displayNameKey?this.localizationManager.getDisplayName(e.displayNameKey):e.displayName,description:n?void 0:this.localizationManager&&e.descriptionKey?this.localizationManager.getDisplayName(e.descriptionKey):e.description,slices:[],uid:t,collapsible:e.collapsible,delaySaveSlices:e.delaySaveSlices,disabled:e.disabled,disabledReason:e.disabledReason};o.groups.push(i);const a={};if(e.container){const o=e.container,n=t+\"-container\",r={displayName:this.localizationManager&&o.displayNameKey?this.localizationManager.getDisplayName(o.displayNameKey):o.displayName,description:this.localizationManager&&o.descriptionKey?this.localizationManager.getDisplayName(o.descriptionKey):o.description,containerItems:[],uid:n};o.containerItems.forEach(e=>{const t=e.displayNameKey?e.displayNameKey:e.displayName,i=n+t,o={displayName:this.localizationManager&&e.displayNameKey?this.localizationManager.getDisplayName(e.displayNameKey):e.displayName,slices:[],uid:i};this.buildFormattingSlices({slices:e.slices,objectName:s,sliceNames:a,formattingSlices:o.slices}),r.containerItems.push(o)}),i.container=r}if(e.slices){if(e.topLevelSlice){const t=e.topLevelSlice.getFormattingSlice(s,this.localizationManager);t.suppressDisplayName=!0,(null==i.displayName?o:i).topLevelToggle=t}this.buildFormattingSlices({slices:e.slices,objectName:s,sliceNames:a,formattingSlices:i.slices})}}),o.revertToDefaultDescriptors=this.getRevertToDefaultDescriptor(e),t.cards.push(o)}),t}buildFormattingSlices({slices:e,objectName:t,sliceNames:i,formattingSlices:a}){null==e||e.filter(({visible:e=!0})=>e).forEach(e=>{const o=null==e?void 0:e.getFormattingSlice(t,this.localizationManager);o&&(void 0===i[e.name]?i[e.name]=0:(i[e.name]++,o.uid=`${o.uid}-${i[e.name]}`),a.push(o))})}getRevertToDefaultDescriptor(e){var t;const i={},o=[];let s,n=[];return e instanceof a.St&&e.topLevelSlice&&o.push(...null===(t=e.topLevelSlice)||void 0===t?void 0:t.getRevertToDefaultDescriptor(e.name)),(e instanceof a.Tn?[e].filter(({visible:e=!0})=>e):e.groups.filter(({visible:e=!0})=>e)).forEach(t=>{var a,r;s=this.getSlicesRevertToDefaultDescriptor(e.name,t.slices,i,t.topLevelSlice),null===(r=null===(a=t.container)||void 0===a?void 0:a.containerItems)||void 0===r||r.forEach(t=>{n=n.concat(this.getSlicesRevertToDefaultDescriptor(e.name,t.slices,i))}),o.push(...s.concat(n))}),o}getSlicesRevertToDefaultDescriptor(e,t,i,a){let o=[];return a&&(i[a.name]=!0,o=o.concat(a.getRevertToDefaultDescriptor(e))),null==t||t.forEach(t=>{t&&!i[t.name]&&(i[t.name]=!0,o=o.concat(t.getRevertToDefaultDescriptor(e)))}),o}}])},674(e,t,i){i.d(t,{O:()=>o.A,z:()=>a});var a=i(754),o=i(667)},639(e,t,i){function a(e,t){return{objectName:e,propertyName:t.name,selector:t.selector,altConstantValueSelector:t.altConstantSelector,instanceKind:t.instanceKind}}function o(e,t,i){return null==t||\"object\"==typeof t&&!t.solid?i:t.solid?{value:null==t?void 0:t.solid.color}:\"Dropdown\"===(null==e?void 0:e.type)&&e.items?e.items.find(e=>e.value==t):t}i.d(t,{D:()=>o,y:()=>a})},473(e,t,i){i.d(t,{S:()=>l});var a=i(674),o=a.z.Tn,s=a.z.Kx;class n extends o{tabela=new a.z.ks({name:\"tabela\",displayName:\"Tabela\",value:\"\",placeholder:\"ex.: dCliente\"});coluna=new a.z.ks({name:\"coluna\",displayName:\"Coluna\",value:\"\",placeholder:\"ex.: NomeCliente\"});name=\"filtro\";displayName=\"Filtro\";slices=[this.tabela,this.coluna]}class r extends o{chave=new a.z.ks({name:\"apiKey\",displayName:\"Chave da API (Gemini / Token)\",value:\"\",placeholder:\"Cole sua Gemini API Key...\"});modelo=new a.z.ks({name:\"modelo\",displayName:\"Modelo Gemini\",value:\"gemini-3.5-flash-lite\",placeholder:\"ex.: gemini-3.5-flash-lite ou gemini-3.5-flash\"});endpoint=new a.z.ks({name:\"endpoint\",displayName:\"Endpoint Customizado (Opcional)\",value:\"\",placeholder:\"Vazio = API oficial do Google, ou URL Cloud Function\"});instrucao=new a.z.ks({name:\"instrucao\",displayName:\"Instrução de Sistema\",value:\"Você é um analista de dados executivo. Responda em português do Brasil de forma direta, analítica e orientada a negócios.\",placeholder:\"Instrução base para a IA...\"});name=\"ia\";displayName=\"IA (Gemini)\";slices=[this.chave,this.modelo,this.endpoint,this.instrucao]}class l extends s{filtroCard=new n;iaCard=new r;cards=[this.filtroCard,this.iaCard]}},848(e,t,i){i.d(t,{b:()=>s});var a=i(674),o=i(473);class s{host;events;target;ultimoHtml=null;resizeCallback=null;formattingSettings;formattingSettingsService;constructor(e){e&&(this.host=e.host,this.events=e.host.eventService,this.target=e.element,this.target.classList.add(\"hjv-root\")),this.formattingSettingsService=new a.O,this.exporApi()}update(e){this.events.renderingStarted(e);try{const t=e.dataViews&&e.dataViews[0];this.formattingSettings=this.formattingSettingsService.populateFormattingSettingsModel(o.S,t);const i=this.api();i.largura=e.viewport.width,i.altura=e.viewport.height;const a=t&&t.single?t.single.value:null,s=null==a?\"\":String(a);if(s)if(s!==this.ultimoHtml)this.ultimoHtml=s,this.renderizar(s);else{if(\"function\"==typeof this.resizeCallback)try{this.resizeCallback()}catch(e){this.mostrarErro(\"Erro no resize da medida\",e)}window.dispatchEvent(new Event(\"pbi-resize\"))}else this.ultimoHtml=null,this.resizeCallback=null,this.target.innerHTML=\"<div class='hjv-vazio'>Arraste para <b>HTML</b> uma medida que retorne HTML (com CSS e JS).</div>\";this.events.renderingFinished(e)}catch(t){this.mostrarErro(\"Erro ao atualizar o visual\",t),this.events.renderingFailed(e,String(t))}}renderizar(e){this.resizeCallback=null;const t=document.createElement(\"div\");t.className=\"hjv-conteudo\",t.innerHTML=e;const i=Array.from(t.querySelectorAll(\"script\"));i.forEach(e=>e.parentNode?.removeChild(e)),this.target.innerHTML=\"\",this.target.appendChild(t),i.forEach(e=>{const i=document.createElement(\"script\");Array.from(e.attributes).forEach(e=>i.setAttribute(e.name,e.value)),i.text=e.text;try{t.appendChild(i)}catch(e){this.mostrarErro(\"Erro no JavaScript da medida\",e)}})}api(){return window.pbi}exporApi(){const e=this,t=window.pbi,i=t&&t.usoIA?t.usoIA:{ultimoPromptTokens:0,ultimoOutputTokens:0,ultimoTotalTokens:0,tokensAcumulados:0,orcamentoTokensSessao:1e5,requisicoesTotal:0,modelos:{},alertaNivel:\"ok\",alertaMensagem:\"\"};window.pbi={versao:\"1.1.1.0\",estado:t&&t.estado?t.estado:{},usoIA:i,largura:0,altura:0,filtrar(t,i,a){e.aplicarFiltro(t,i,a)},limpar(){e.aplicarFiltro(null)},abrirLink(t){e.host.launchUrl(t)},baixar:(t,i,a,o)=>e.baixar(t,i,a||\"csv\",o||i),aoRedimensionar(t){e.resizeCallback=\"function\"==typeof t?t:null},iaConfigurada:()=>e.iaConfigurada(),perguntarIA:(t,i)=>e.perguntarIA(t,i)},t||window.addEventListener(\"error\",e=>this.mostrarErro(\"Erro no JavaScript da medida\",e.error||e.message))}aplicarFiltro(e,t,i){const a=this.formattingSettings?this.formattingSettings.filtroCard:null,o=t||(a?a.tabela.value:\"\"),s=i||(a?a.coluna.value:\"\");if(!e||0===e.length)return void this.host.applyJsonFilter(null,\"general\",\"filter\",1);if(!o||!s)return void this.mostrarErro(\"Filtro não configurado\",\"Informe tabela e coluna em Formatar > Filtro, ou passe em pbi.filtrar(valores, 'tabela', 'coluna').\");const n={$schema:\"http://powerbi.com/product/schema#basic\",target:{table:o,column:s},filterType:1,operator:\"In\",values:e};this.host.applyJsonFilter(n,\"general\",\"filter\",0)}baixar(e,t,i,a){const o=this.host.downloadService;return o&&\"function\"==typeof o.exportVisualsContent?(\"function\"==typeof o.exportStatus?Promise.resolve(o.exportStatus()):Promise.resolve(0)).then(s=>0===s&&Promise.resolve(o.exportVisualsContent(e,t,i,a)).then(e=>!!e)).catch(()=>!1):Promise.resolve(!1)}iaConfigurada(){const e=this.formattingSettings?this.formattingSettings.iaCard:null;if(!e)return!1;const t=e.chave&&e.chave.value?e.chave.value.trim():\"\",i=e.endpoint&&e.endpoint.value?e.endpoint.value.trim():\"\";return!(!t&&!i)}async descobrirModelosDisponiveis(e){try{const t=await fetch(\"https://generativelanguage.googleapis.com/v1beta/models?key=\"+encodeURIComponent(e));if(!t.ok)return[];const i=await t.json();if(!i||!Array.isArray(i.models))return[];const a=[];for(const e of i.models){const t=e.supportedGenerationMethods||[],i=String(e.name||\"\").replace(/^models\\//,\"\");t.indexOf(\"generateContent\")>=0&&/^gemini/i.test(i)&&!/tts|image|embedding|veo|imagen|audio|robotics|computer-use/i.test(i)&&a.push(i)}return a.sort((e,t)=>{const i=e=>e.indexOf(\"flash-lite\")>=0?0:e.indexOf(\"flash\")>=0?1:2;return i(e)-i(t)}),a}catch{return[]}}async perguntarIA(e,t){if(!e||!String(e).trim())throw new Error(\"O prompt para a IA não pode estar vazio.\");const i=this.formattingSettings?this.formattingSettings.iaCard:null,a=\"object\"==typeof t&&null!==t&&!Array.isArray(t)&&(\"dados\"in t||\"instrucao\"in t||\"modelo\"in t||\"apiKey\"in t||\"endpoint\"in t||\"temperatura\"in t||\"json\"in t)?t:{dados:t},o=(a.apiKey||(i&&i.chave?i.chave.value:\"\")||\"\").trim(),s=(a.modelo||(i&&i.modelo?i.modelo.value:\"\")||\"auto\").trim(),n=(a.endpoint||(i&&i.endpoint?i.endpoint.value:\"\")||\"\").trim(),r=(void 0!==a.instrucao?a.instrucao:i&&i.instrucao?i.instrucao.value:\"\").trim(),l=\"number\"==typeof a.temperatura?a.temperatura:.2;let c=String(e).trim();if(void 0!==a.dados&&null!==a.dados&&\"\"!==a.dados&&(c+=\"\\n\\nContexto de dados do painel:\\n\"+(\"string\"==typeof a.dados?a.dados:JSON.stringify(a.dados))),n){const t={\"Content-Type\":\"application/json\"};o&&(t.Authorization=o.startsWith(\"Bearer \")?o:\"Bearer \"+o,t[\"x-api-key\"]=o);const i=await fetch(n,{method:\"POST\",headers:t,body:JSON.stringify({prompt:String(e).trim(),textoCompleto:c,dados:a.dados,instrucao:r,modelo:s,temperatura:l,json:!!a.json})}),d=await i.text();if(!i.ok)throw new Error(\"Erro HTTP \"+i.status+\" no endpoint de IA: \"+d.slice(0,300));try{const e=JSON.parse(d);if(\"string\"==typeof e)return e;if(e.resposta)return String(e.resposta);if(e.text)return String(e.text);if(e.output)return String(e.output);if(e.candidates&&e.candidates[0]&&e.candidates[0].content&&e.candidates[0].content.parts){const t=e.candidates[0].content.parts,i=t.filter(e=>!e.thought&&\"string\"==typeof e.text);return(i.length>0?i:t).map(e=>e.text||\"\").join(\"\")}return d}catch{return d}}if(!o)throw new Error(\"Chave da API do Gemini não configurada. Preencha em Formatar > IA (Gemini) > Chave da API ou informe na tela.\");const d={contents:[{role:\"user\",parts:[{text:c}]}],generationConfig:{temperature:l}};r&&(d.systemInstruction={parts:[{text:r}]}),a.json&&(d.generationConfig.responseMimeType=\"application/json\");const u=[\"gemini-3.5-flash-lite\",\"gemini-3.5-flash\",\"gemini-3.6-flash\",\"gemini-3.8-flash\",\"gemini-3.7-flash\"],p=[];s&&\"auto\"!==s&&!/gemma/i.test(s)&&p.push(s);for(const e of u)p.indexOf(e)<0&&p.push(e);let m=\"\",g=!1;for(let e=0;e<p.length;e++){const t=p[e],i=\"https://generativelanguage.googleapis.com/v1beta/models/\"+encodeURIComponent(t)+\":generateContent?key=\"+encodeURIComponent(o),a=JSON.parse(JSON.stringify(d));/^gemini-3/i.test(t)&&(a.generationConfig=a.generationConfig||{},a.generationConfig.thinkingConfig={thinkingLevel:\"LOW\"});const s=await fetch(i,{method:\"POST\",headers:{\"Content-Type\":\"application/json\"},body:JSON.stringify(a)}),n=await s.text();if(s.ok){const e=JSON.parse(n),i=window.pbi&&window.pbi.usoIA;if(i&&e&&e.usageMetadata){const a=e.usageMetadata,o=Number(a.promptTokenCount||0),s=Number(a.candidatesTokenCount||0)+Number(a.thoughtsTokenCount||0),n=Number(a.totalTokenCount||o+s);i.ultimoPromptTokens=o,i.ultimoOutputTokens=s,i.ultimoTotalTokens=n,i.tokensAcumulados=Number(i.tokensAcumulados||0)+n,i.requisicoesTotal=Number(i.requisicoesTotal||0)+1,i.modelos=i.modelos||{};const r=i.modelos[t]||{reqs:0,tokens:0,limiteRpd:20,esgotado:!1};r.reqs+=1,r.tokens+=n,i.modelos[t]=r}const a=e&&e.candidates&&e.candidates[0]&&e.candidates[0].content&&e.candidates[0].content.parts;if(a&&a.length){window.pbi.ultimoModeloUsado=t;const e=a.filter(e=>!e.thought&&\"string\"==typeof e.text);return(e.length>0?e:a).map(e=>e.text||\"\").join(\"\")}}let r=n.slice(0,200);try{const e=JSON.parse(n);e&&e.error&&e.error.message&&(r=e.error.message)}catch{}if(429===s.status){const e=window.pbi&&window.pbi.usoIA;if(e){e.modelos=e.modelos||{};const i=e.modelos[t]||{reqs:20,tokens:0,limiteRpd:20,esgotado:!0};i.esgotado=!0,i.reqs=Math.max(i.reqs,i.limiteRpd||20),e.modelos[t]=i}}if(m=\"Erro HTTP \"+s.status+\" (\"+t+\"): \"+r,401===s.status||403===s.status||400===s.status&&/API_KEY|key/i.test(r))throw new Error(m);if(!g&&(404===s.status||503===s.status||429===s.status)){g=!0;const e=await this.descobrirModelosDisponiveis(o);for(const t of e)p.indexOf(t)<0&&p.push(t)}}throw new Error(m||\"Não foi possível obter resposta dos modelos Gemini no momento.\")}mostrarErro(e,t){let i=this.target.querySelector(\".hjv-erro\");i||(i=document.createElement(\"div\"),i.className=\"hjv-erro\",this.target.appendChild(i)),i.textContent=e+\": \"+(t&&t.message?t.message:String(t))}getFormattingModel(){return this.formattingSettingsService.buildFormattingModel(this.formattingSettings)}}}};const t={};function i(a){const o=t[a];if(void 0!==o)return o.exports;const s=t[a]={exports:{}};return e[a](s,s.exports,i),s.exports}i.d=(e,t)=>{if(Array.isArray(t))for(var a=0;a<t.length;){var o=t[a++],s=t[a++],n=0===s?{enumerable:!0,value:t[a++]}:{enumerable:!0,get:s};i.o(e,o)||Object.defineProperty(e,o,n)}else for(var o in t)i.o(t,o)&&!i.o(e,o)&&Object.defineProperty(e,o,{enumerable:!0,get:t[o]})},i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),i.r=e=>{Object.defineProperty(e,Symbol.toStringTag,{value:\"Module\"}),Object.defineProperty(e,\"__esModule\",{value:!0})};let a={};(()=>{i.r(a);var e=i(848),t=window.powerbi,o={name:\"htmlJsStudioECDA55D8A9E74168A5FFE5D14050141E\",displayName:\"VA Studio\",class:\"Visual\",apiVersion:\"5.11.0\",create:t=>{if(e.b)return new e.b(t);throw\"Visual instance not found\"},createModalDialog:(e,t,i)=>{const a=globalThis.dialogRegistry;e in a&&new a[e](t,i)},custom:!0};void 0!==t&&(t.visuals=t.visuals||{},t.visuals.plugins=t.visuals.plugins||{},t.visuals.plugins.htmlJsStudioECDA55D8A9E74168A5FFE5D14050141E=o);const s=o;i.d(a,[\"default\",0,s])})(),htmlJsStudioECDA55D8A9E74168A5FFE5D14050141E=a})();",
+    "css": ".hjv-root {\n  width: 100%;\n  height: 100%;\n  overflow: auto;\n  position: relative;\n}\n.hjv-conteudo {\n  width: 100%;\n  min-height: 100%;\n}\n.hjv-vazio {\n  font-family: \"Segoe UI\", Arial, sans-serif;\n  font-size: 12px;\n  color: #6b7280;\n  padding: 16px;\n}\n.hjv-erro {\n  position: absolute;\n  left: 8px;\n  right: 8px;\n  bottom: 8px;\n  font-family: Consolas, monospace;\n  font-size: 11px;\n  color: #991b1b;\n  background: #fee2e2;\n  border: 1px solid #fca5a5;\n  border-radius: 4px;\n  padding: 6px 8px;\n  z-index: 1000;\n}\n\n",
+    "iconBase64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpBOEJGMzkxN0NBRDNFMDExQTcxQ0JFODI3ODBCQUE5RSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3NEY1QjA1NUQ0OTAxMUUwQTgxREI2NjMxMkNEMUNEMyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3NEY1QjA1NEQ0OTAxMUUwQTgxREI2NjMxMkNEMUNEMyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5Mjk5RDU1ODBGRDRFMDExQTcxQ0JFODI3ODBCQUE5RSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpBOEJGMzkxN0NBRDNFMDExQTcxQ0JFODI3ODBCQUE5RSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PpDoNX0AAAI3SURBVHjarJRLSFVRFIY9t7SiRDGLoEEPCRJRaCSYkxCiFCXCF+LIMExQLkilgumgwkbdBuWDRC2EomhURCOjgagkXEgKLUKhidobM6H0+i34rxyPnuvEA5/rXPda/1l7739vJxKJxG3ls93+hEKhTILxJhgMftmsiPxdhHw4CfepeR8dCyjWwwB0kZy3iVgCoQ2ewnmXxhrBD7Cgr/ZQVA17fDRPw2UYhzK6G99IsBse6/0QNME+H8FT4EA/YiPqOgA1q4IMzBNuw6iKjkCpj+Av+AdnEEmD3bxfhzvuDk30HaEaLsEkXCO53rN+Bwg5qsvTuj/TjGYtx9nINhRmEx7AYWiFW7AXOuEcbPOUvIZ2mnrl+PkQUbNEh4QHNKUSDdsSBWEOlmxTEfvs26FL9Khe211if6Acgee+xo7xzMgBxfq9qPe3fgWBGN2lEnqtG9nExM7CV3jp3bDos2bKJB0nHFRxAxRpA/5CIXyHh5ABv6GZqd9dJ6iz2SjbxMMypGhJFtTlNzu3kK7xgDxpove8U66FK2A+s6nul5gVVMEL+Ak7lG/T+g9JcIOGar2CRUoogxMwpP/bLTJMB9bRhDbkk5bBUU0y3ES0xS04CBfN9RSHiY90vJK0BHaSzG9h2eejS3RJeVfdtrGzuGyd8CX7Yq6ExuCH63jaVMPkFOv6OibB6DKs2+VEQp+WYBoqERn2sVWWRNN0YurIfeL14U6YkpkLYCSG6e0yqdCxvKBLIm5FgAEAV0nKuwMYRUsAAAAASUVORK5CYII="
+  },
+  "visualEntryPoint": "",
+  "externalJS": [],
+  "assets": {
+    "icon": "assets/icon.png"
+  }
+}

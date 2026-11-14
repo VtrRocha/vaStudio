@@ -3,3 +3,6 @@ node_modules/
 webpack.statistics.*.html
 *.log
 
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+**/.pbi/editorSettings.json

@@ -1,0 +1,100 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 338.39999389648438,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1420.8899992388156,
+            "y": 49.533632684458212
+          },
+          "nodeIndex": "Medidas",
+          "nodeLineageTag": "c2c2d407-39a9-4ea7-8abc-91a4587be783",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1186.8899992388156,
+            "y": 49.067265368916424
+          },
+          "nodeIndex": "dCalendario",
+          "nodeLineageTag": "6ffe93dd-3410-4f06-a0a8-8b6857d19b74",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 902.68375043077776,
+            "y": 75.144998600208055
+          },
+          "nodeIndex": "dPedido",
+          "nodeLineageTag": "5c8393ae-05ff-4e97-8d2f-16811f52c327",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 334.21038232322633,
+            "y": 1.9876997276917905
+          },
+          "nodeIndex": "dPizza",
+          "nodeLineageTag": "62f45473-218a-4f12-8031-2bab8a532133",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": -50
+          },
+          "nodeIndex": "dPizzaTipo",
+          "nodeLineageTag": "5c9a5b24-ab7a-4796-8024-dcd4137b72aa",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 618.43572994368492,
+            "y": 36.222523376033905
+          },
+          "nodeIndex": "fItemPedido",
+          "nodeLineageTag": "f236a2ac-38b4-4a7b-8df8-1f3a80401c64",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas as tabelas",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas as tabelas",
+  "defaultDiagram": "Todas as tabelas"
+}
